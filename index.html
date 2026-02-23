@@ -200,6 +200,15 @@ section{position:relative;z-index:1;padding:7rem 1.5rem}
   color:var(--lime);font-weight:500;letter-spacing:.06em}
 .demo-status .sd{width:5px;height:5px;background:var(--lime);border-radius:50%;
   box-shadow:0 0 6px var(--lime);animation:dp 1.8s infinite}
+  
+/* AUDIO PLAYER */
+.audio-player{padding:1rem 2rem;border-bottom:1px solid var(--border);background:linear-gradient(90deg,rgba(0,229,255,.05),transparent);display:flex;align-items:center;gap:1.2rem}
+.play-btn{width:42px;height:42px;border-radius:50%;background:var(--cyan);color:var(--void);border:none;cursor:pointer;display:grid;place-items:center;font-size:1.1rem;flex-shrink:0;transition:all .3s var(--ease)}
+.play-btn:hover{transform:scale(1.08);box-shadow:0 0 20px rgba(0,229,255,.4)}
+.audio-track{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:6px;position:relative;overflow:hidden;cursor:pointer}
+.audio-fill{position:absolute;left:0;top:0;bottom:0;background:var(--g1);width:0%;pointer-events:none;transition:width .1s linear}
+.audio-time{font-size:.7rem;color:var(--txt-d);font-family:var(--mono);min-width:70px;text-align:right}
+
 .chat{padding:1.8rem 2rem;display:flex;flex-direction:column;gap:.9rem;min-height:280px}
 .msg{max-width:78%;padding:.85rem 1.15rem;border-radius:18px;font-size:.88rem;line-height:1.65;
   opacity:0;transform:translateY(12px) scale(.96);animation:msgIn .5s var(--ease-b) forwards}
@@ -244,6 +253,12 @@ section{position:relative;z-index:1;padding:7rem 1.5rem}
 .btn-o:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px)}
 .btn-f{background:var(--cyan);color:var(--void)}
 .btn-f:hover{box-shadow:0 14px 45px rgba(0,229,255,.3);transform:translateY(-2px)}
+
+/* ═══ ABOUT US ═══ */
+.about{max-width:800px;margin:0 auto;text-align:center}
+.about-content{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:3rem;text-align:left;margin-top:2.5rem;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.about-content p{font-size:1.05rem;color:var(--txt-d);line-height:1.8;margin-bottom:1.5rem}
+.about-content p:last-child{margin-bottom:0}
 
 /* ═══ GROK ═══ */
 .grok{max-width:700px;margin:0 auto;text-align:center;padding:5rem 1.5rem;position:relative;z-index:1}
@@ -353,8 +368,8 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
     <a href="#feat">Features</a>
     <a href="#how">How It Works</a>
     <a href="#pricing">Pricing</a>
-    <a href="#demo">Demo</a>
-    <a href="#" class="n-cta trial-btn" data-plan="">Get Started →</a>
+    <a href="#about">About Us</a>
+    <a href="https://pickcall-ai.onrender.com/dashboard" class="n-cta">Login →</a>
   </div>
 </nav>
 
@@ -388,10 +403,10 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
 <!-- SOCIAL PROOF -->
 <div class="proof">
   <div class="proof-inner">
-    <div data-r><div class="st-n" data-c="10000">0</div><div class="st-l">Calls Handled</div></div>
-    <div data-r="1"><div class="st-n" data-c="98">0</div><div class="st-l">% Satisfaction</div></div>
-    <div data-r="2"><div class="st-n" data-c="150">0</div><div class="st-l">Businesses Trust Us</div></div>
-    <div data-r="3"><div class="st-n" data-c="24">0</div><div class="st-l">/ 7 Availability</div></div>
+    <div data-r><div class="st-n" data-c="700" data-p="<" data-s="ms">0</div><div class="st-l">Voice Latency</div></div>
+    <div data-r="1"><div class="st-n" data-c="100" data-s="%">0</div><div class="st-l">Calls Answered</div></div>
+    <div data-r="2"><div class="st-n" data-c="48" data-s=" Hrs">0</div><div class="st-l">Custom AI Training</div></div>
+    <div data-r="3"><div class="st-n" data-c="24" data-s="/7">0</div><div class="st-l">Availability</div></div>
   </div>
 </div>
 
@@ -466,6 +481,17 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
       <div><div class="demo-nm">Sarah — PickCall AI</div><div class="demo-rl">AI Receptionist • Grok Realtime Voice</div></div>
       <div class="demo-status"><span class="sd"></span>ACTIVE</div>
     </div>
+    
+    <!-- AUDIO PLAYER -->
+    <div class="audio-player">
+      <button class="play-btn" id="playDemoBtn" aria-label="Play Demo" onclick="toggleAudio()">▶</button>
+      <div class="audio-track" id="audioTrack" onclick="seekAudio(event)">
+        <div class="audio-fill" id="audioFill"></div>
+      </div>
+      <div class="audio-time" id="audioTime">0:00 / 0:45</div>
+      <audio id="demoAudio" src="demo-call.mp3" preload="metadata"></audio>
+    </div>
+
     <div class="chat">
       <div class="msg msg-ai">Hi! Thanks for calling PickCall AI, this is Sarah. How can I help you today?</div>
       <div class="msg msg-u">Hey, do you handle appointment booking for dental offices?</div>
@@ -518,6 +544,19 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
         <li>Priority Support</li><li>Dedicated Account Manager</li>
       </ul>
       <a href="#" class="btn-tier btn-o">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT US -->
+<section id="about" class="about">
+  <div class="centered">
+    <div class="sec-l" data-r>Our Story</div>
+    <div class="sec-t" data-r="1">Proudly Built in<br><span class="grad">Kelowna, BC</span></div>
+    <div class="about-content" data-r="2">
+      <p>We're local software developers who noticed a massive problem in our own community: incredible local businesses—plumbers, roofers, dentists, and salons—were losing thousands of dollars simply because they couldn't answer the phone while under a sink or with a patient.</p>
+      <p>A missed call means a customer immediately goes back to Google to call the next business on the list. We built PickCall AI to put an end to that.</p>
+      <p>We believe that local businesses deserve the same powerful, enterprise-grade AI tools as massive corporations. Our mission is to make sure your front desk is always open, always warm, and always booking.</p>
     </div>
   </div>
 </section>
@@ -700,9 +739,9 @@ document.querySelectorAll('.b-card').forEach(c=>{c.addEventListener('mousemove',
 
 /* ═══ COUNTER ANIMATION ═══ */
 const co=new IntersectionObserver(es=>{es.forEach(e=>{if(!e.isIntersecting)return;
-  const el=e.target,tgt=+el.dataset.c;let cur=0;const step=tgt/55;
+  const el=e.target,tgt=+el.dataset.c,sfx=el.dataset.s||'',pfx=el.dataset.p||'';let cur=0;const step=tgt/55;
   const iv=setInterval(()=>{cur+=step;if(cur>=tgt){cur=tgt;clearInterval(iv)}
-    let t=Math.floor(cur).toLocaleString();if(tgt>=1000)t+='+';else if(tgt===98)t+='%';el.textContent=t},18);
+    el.textContent=pfx+Math.floor(cur).toLocaleString()+sfx},18);
   co.unobserve(el)})},{threshold:.5});
 document.querySelectorAll('[data-c]').forEach(el=>co.observe(el));
 
@@ -718,6 +757,38 @@ document.querySelectorAll('[data-c]').forEach(el=>co.observe(el));
 
 /* ═══ CANVAS FADE ON SCROLL ═══ */
 addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opacity=Math.max(.2,1-scrollY/2500)});
+
+/* ═══ AUDIO PLAYER LOGIC ═══ */
+(function(){
+  const aEl=document.getElementById('demoAudio'),pBtn=document.getElementById('playDemoBtn'),aFill=document.getElementById('audioFill'),aTime=document.getElementById('audioTime'),aTrack=document.getElementById('audioTrack');
+  let isPlaying=false;
+  function fmt(s){if(isNaN(s))return'0:00';const m=Math.floor(s/60),sc=Math.floor(s%60);return m+':'+(sc<10?'0':'')+sc}
+  window.toggleAudio=function(){
+    if(!aEl)return;
+    if(isPlaying){aEl.pause();pBtn.innerHTML='▶';isPlaying=false}
+    else{
+        aEl.play().catch(e=>{
+            alert('Almost ready! You just need to upload a recording of your AI named "demo-call.mp3" to your GitHub repository.');
+            pBtn.innerHTML='▶';isPlaying=false;
+        });
+        pBtn.innerHTML='⏸';isPlaying=true;
+    }
+  };
+  if(aEl){
+    aEl.addEventListener('timeupdate',()=>{
+      const pct=(aEl.currentTime/(aEl.duration||1))*100;
+      aFill.style.width=pct+'%';
+      aTime.textContent=fmt(aEl.currentTime)+' / '+fmt(aEl.duration||45);
+    });
+    aEl.addEventListener('loadedmetadata',()=>{aTime.textContent='0:00 / '+fmt(aEl.duration)});
+    aEl.addEventListener('ended',()=>{pBtn.innerHTML='▶';isPlaying=false;aFill.style.width='0%';aEl.currentTime=0});
+  }
+  window.seekAudio=function(e){
+    if(!aEl||!aEl.duration)return;
+    const r=aTrack.getBoundingClientRect(),pct=(e.clientX-r.left)/r.width;
+    aEl.currentTime=pct*aEl.duration;
+  };
+})();
 
 /* ═══ BOOKING MODAL ═══ */
 (function(){
@@ -916,16 +987,39 @@ addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opaci
             const data = await response.json();
             typingDiv.remove();
 
+            // --- BULLETPROOF GREETING REMOVER ---
+            let aiReply = data.reply;
+            if (chatHistory.length > 0) {
+                // Violently strip out all repetitive greetings, names, and emojis if it is an ongoing chat
+                aiReply = aiReply.replace(/Hi[!,.]?\s*/gi, '');
+                aiReply = aiReply.replace(/Hello[!,.]?\s*/gi, '');
+                aiReply = aiReply.replace(/Thanks for (calling|chatting|reaching out)[^.]*\.?\s*/gi, '');
+                aiReply = aiReply.replace(/This is Sarah[.,!?]*\s*/gi, '');
+                aiReply = aiReply.replace(/How can I help you today\??\s*😊?/gi, '');
+                aiReply = aiReply.replace(/^[\s\-—]+/g, ''); // Clean up stray dashes or spaces
+                
+                // Capitalize first letter just in case the sentence got chopped
+                if (aiReply.length > 0) {
+                    aiReply = aiReply.charAt(0).toUpperCase() + aiReply.slice(1);
+                }
+                
+                // If Grok *only* said the greeting and nothing else
+                if (aiReply.trim() === '') {
+                    aiReply = "I'm ready to assist with that!";
+                }
+            }
+            // ------------------------------------
+
             // Add AI response
             const aiDiv = document.createElement('div');
             aiDiv.className = 'chat-msg chat-msg-ai';
-            aiDiv.textContent = data.reply;
+            aiDiv.textContent = aiReply;
             messagesDiv.appendChild(aiDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
             // Save to conversation history
             chatHistory.push({ role: "user", content: message });
-            chatHistory.push({ role: "assistant", content: data.reply });
+            chatHistory.push({ role: "assistant", content: aiReply });
 
         } catch (error) {
             typingDiv.remove();
