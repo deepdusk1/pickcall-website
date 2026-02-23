@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Added maximum-scale and user-scalable to prevent mobile auto-zoom bouncing -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <title>PickCall AI — Your Business Never Misses a Call</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -20,8 +21,9 @@
   --ease:cubic-bezier(.16,1,.3,1);
   --ease-b:cubic-bezier(.34,1.56,.64,1);
 }
-html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent}
-body{font-family:var(--sans);background:var(--void);color:var(--txt);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+/* Locked width and hidden overflow to prevent side-to-side bouncing */
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;width:100%;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--void);color:var(--txt);width:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative}
 
 /* ═══ CANVAS BG ═══ */
 #meshCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6}
@@ -459,10 +461,11 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
 <section id="how" class="how">
   <div class="centered">
     <div class="sec-l" data-r>How It Works</div>
-    <div class="sec-t" data-r="1">Three Steps. Five Minutes.<br>You're Live.</div>
+    <!-- CHANGED FROM 5 MINUTES TO 48 HOURS -->
+    <div class="sec-t" data-r="1">Three Steps. 48 Hours.<br>You're Live.</div>
   </div>
   <div class="steps">
-    <div class="stp" data-r="1"><div class="stp-n"><span>1</span></div><div class="stp-t">Tell Us About You</div><div class="stp-d">Business name, hours, services, personality. We craft your custom AI receptionist in minutes.</div></div>
+    <div class="stp" data-r="1"><div class="stp-n"><span>1</span></div><div class="stp-t">Tell Us About You</div><div class="stp-d">Business name, hours, services, personality. We manually train and craft your AI receptionist to perfection.</div></div>
     <div class="stp" data-r="2"><div class="stp-n"><span>2</span></div><div class="stp-t">Connect Your Phone</div><div class="stp-d">Forward your line to your PickCall number. Or get a fresh local number from us instantly.</div></div>
     <div class="stp" data-r="3"><div class="stp-n"><span>3</span></div><div class="stp-t">Never Miss Again</div><div class="stp-d">Your AI answers 24/7. Review calls, transcripts, and bookings from your dashboard.</div></div>
   </div>
@@ -737,7 +740,7 @@ document.querySelectorAll('.b-card').forEach(c=>{c.addEventListener('mousemove',
   const r=c.getBoundingClientRect();c.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
   c.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%')})});
 
-/* ═══ COUNTER ANIMATION ═══ */
+/* ═══ COUNTER ANIMATION (UPDATED FOR PREFIX/SUFFIX) ═══ */
 const co=new IntersectionObserver(es=>{es.forEach(e=>{if(!e.isIntersecting)return;
   const el=e.target,tgt=+el.dataset.c,sfx=el.dataset.s||'',pfx=el.dataset.p||'';let cur=0;const step=tgt/55;
   const iv=setInterval(()=>{cur+=step;if(cur>=tgt){cur=tgt;clearInterval(iv)}
@@ -882,153 +885,4 @@ addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opaci
 #chat-input{flex:1;padding:10px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:24px;outline:none;color:#f0f0ff;font-family:'Sora',sans-serif;font-size:13px;transition:border-color .2s,box-shadow .2s}
 #chat-input::placeholder{color:#66668a}
 #chat-input:focus{border-color:rgba(0,229,255,.3);box-shadow:0 0 12px rgba(0,229,255,.08)}
-#ai-chat-window .send-btn{background:linear-gradient(135deg,#00e5ff,#8b5cf6);border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;flex-shrink:0}
-#ai-chat-window .send-btn:hover{transform:scale(1.08);box-shadow:0 2px 16px rgba(0,229,255,.3)}
-@keyframes chatMsgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes typingDot{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
-@media(max-width:480px){#ai-chat-window{width:calc(100vw - 24px);right:12px;bottom:84px;height:65vh}}
-</style>
-
-<!-- Chat Bubble Button -->
-<div id="ai-chat-bubble" onclick="toggleChat()">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-</div>
-
-<!-- Chat Window -->
-<div id="ai-chat-window">
-    <!-- Header -->
-    <div class="chat-header">
-        <div class="chat-header-left">
-            <div class="chat-avatar">&#127908;</div>
-            <div class="chat-header-info">
-                <div class="chat-name">Sarah &mdash; PickCall AI</div>
-                <div class="chat-status">Online</div>
-            </div>
-        </div>
-        <div class="chat-header-actions">
-            <button class="end-btn" onclick="endChat()">End Chat</button>
-            <button class="close-btn" onclick="toggleChat()">&times;</button>
-        </div>
-    </div>
-
-    <!-- Messages Area -->
-    <div id="chat-messages">
-        <div class="chat-msg chat-msg-ai">
-            Hi there! I'm Sarah, the AI assistant. Would you like to book an appointment or ask a question about our services?
-        </div>
-    </div>
-
-    <!-- Input Area -->
-    <div class="chat-input-area">
-        <input type="text" id="chat-input" placeholder="Type your message..." onkeypress="if(event.key === 'Enter') sendMessage()">
-        <button class="send-btn" onclick="sendMessage()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-        </button>
-    </div>
-</div>
-
-<script>
-    // Conversation memory
-    let chatHistory = [];
-
-    function toggleChat() {
-        const chatWindow = document.getElementById('ai-chat-window');
-        chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
-    }
-
-    function endChat() {
-        chatHistory = [];
-        const messagesDiv = document.getElementById('chat-messages');
-        messagesDiv.innerHTML = '';
-        const div = document.createElement('div');
-        div.className = 'chat-msg chat-msg-ai';
-        div.textContent = 'Conversation ended. How else can I help you today?';
-        messagesDiv.appendChild(div);
-    }
-
-    function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.appendChild(document.createTextNode(str));
-        return div.innerHTML;
-    }
-
-    async function sendMessage() {
-        const input = document.getElementById('chat-input');
-        const message = input.value.trim();
-        if (!message) return;
-
-        const messagesDiv = document.getElementById('chat-messages');
-
-        // Add user message
-        const userDiv = document.createElement('div');
-        userDiv.className = 'chat-msg chat-msg-user';
-        userDiv.textContent = message;
-        messagesDiv.appendChild(userDiv);
-        input.value = '';
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-        // Add typing indicator
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'chat-msg chat-msg-typing';
-        typingDiv.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
-        messagesDiv.appendChild(typingDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-        try {
-            const response = await fetch('https://pickcall-ai.onrender.com/api/chat/pickcall_demo', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: message,
-                    history: chatHistory
-                })
-            });
-
-            const data = await response.json();
-            typingDiv.remove();
-
-            // --- BULLETPROOF GREETING REMOVER ---
-            let aiReply = data.reply;
-            if (chatHistory.length > 0) {
-                // Violently strip out all repetitive greetings, names, and emojis if it is an ongoing chat
-                aiReply = aiReply.replace(/Hi[!,.]?\s*/gi, '');
-                aiReply = aiReply.replace(/Hello[!,.]?\s*/gi, '');
-                aiReply = aiReply.replace(/Thanks for (calling|chatting|reaching out)[^.]*\.?\s*/gi, '');
-                aiReply = aiReply.replace(/This is Sarah[.,!?]*\s*/gi, '');
-                aiReply = aiReply.replace(/How can I help you today\??\s*😊?/gi, '');
-                aiReply = aiReply.replace(/^[\s\-—]+/g, ''); // Clean up stray dashes or spaces
-                
-                // Capitalize first letter just in case the sentence got chopped
-                if (aiReply.length > 0) {
-                    aiReply = aiReply.charAt(0).toUpperCase() + aiReply.slice(1);
-                }
-                
-                // If Grok *only* said the greeting and nothing else
-                if (aiReply.trim() === '') {
-                    aiReply = "I'm ready to assist with that!";
-                }
-            }
-            // ------------------------------------
-
-            // Add AI response
-            const aiDiv = document.createElement('div');
-            aiDiv.className = 'chat-msg chat-msg-ai';
-            aiDiv.textContent = aiReply;
-            messagesDiv.appendChild(aiDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-            // Save to conversation history
-            chatHistory.push({ role: "user", content: message });
-            chatHistory.push({ role: "assistant", content: aiReply });
-
-        } catch (error) {
-            typingDiv.remove();
-            const errDiv = document.createElement('div');
-            errDiv.className = 'chat-msg chat-msg-error';
-            errDiv.textContent = 'Sorry, I am having trouble connecting to the server.';
-            messagesDiv.appendChild(errDiv);
-        }
-    }
-</script>
-</body>
-</html>
+#ai-chat-window .send-btn{background:linear-gradient(135deg,#00e5ff,#8b5cf6);border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center
