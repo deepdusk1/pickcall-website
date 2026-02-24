@@ -935,21 +935,47 @@ addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opaci
 </div>
 
 <script>
-    // Conversation memory
-    let chatHistory = [];
+    // ══════════════════════════════════════════════════════════════
+    // CHAT WIDGET v5.1 — Server-side persistent session memory
+    //
+    // How it works:
+    //   1. First message → chat_id is "" → server creates a new session,
+    //      returns chat_id in the response.
+    //   2. We store that chat_id in sessionStorage (persists across page
+    //      refreshes, cleared when the tab/browser is closed).
+    //   3. Every subsequent message sends chat_id back → server loads the
+    //      full conversation from the DB and continues seamlessly.
+    //   4. The server sends the FULL history to Grok on every turn, so
+    //      the AI never forgets and never re-greets mid-conversation.
+    //   5. "New Chat" button wipes the sessionStorage key and starts fresh.
+    // ══════════════════════════════════════════════════════════════
+
+    const CHAT_API_BASE  = 'https://pickcall-ai.onrender.com';
+    const CHAT_CLIENT_ID = 'pickcall_demo';
+    const CHAT_STORE_KEY = 'pc_session_' + CHAT_CLIENT_ID;
+
+    let _chatSessionId = sessionStorage.getItem(CHAT_STORE_KEY) || '';
+    let _chatSending   = false;
 
     function toggleChat() {
         const chatWindow = document.getElementById('ai-chat-window');
-        chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
+        const isHidden = chatWindow.style.display === 'none' || chatWindow.style.display === '';
+        chatWindow.style.display = isHidden ? 'flex' : 'none';
+        if (isHidden) {
+            setTimeout(() => document.getElementById('chat-input').focus(), 100);
+        }
     }
 
     function endChat() {
-        chatHistory = [];
+        // "New Chat" — wipe the session so next message starts fresh
+        _chatSessionId = '';
+        sessionStorage.removeItem(CHAT_STORE_KEY);
+
         const messagesDiv = document.getElementById('chat-messages');
         messagesDiv.innerHTML = '';
         const div = document.createElement('div');
         div.className = 'chat-msg chat-msg-ai';
-        div.textContent = 'Conversation ended. How else can I help you today?';
+        div.textContent = 'Chat ended. How else can I help you today?';
         messagesDiv.appendChild(div);
     }
 
@@ -960,13 +986,16 @@ addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opaci
     }
 
     async function sendMessage() {
+        if (_chatSending) return;
+
         const input = document.getElementById('chat-input');
         const message = input.value.trim();
         if (!message) return;
 
+        _chatSending = true;
         const messagesDiv = document.getElementById('chat-messages');
 
-        // Add user message
+        // Show user message
         const userDiv = document.createElement('div');
         userDiv.className = 'chat-msg chat-msg-user';
         userDiv.textContent = message;
@@ -974,7 +1003,7 @@ addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opaci
         input.value = '';
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-        // Add typing indicator
+        // Show typing indicator
         const typingDiv = document.createElement('div');
         typingDiv.className = 'chat-msg chat-msg-typing';
         typingDiv.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
@@ -982,60 +1011,65 @@ addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opaci
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
         try {
-            const response = await fetch('https://pickcall-ai.onrender.com/api/chat/pickcall_demo', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: message,
-                    history: chatHistory
-                })
-            });
+            const response = await fetch(
+                `${CHAT_API_BASE}/api/chat/${encodeURIComponent(CHAT_CLIENT_ID)}`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        chat_id: _chatSessionId   // "" on first message, session ID thereafter
+                    })
+                }
+            );
 
-            const data = await response.json();
             typingDiv.remove();
 
-            // --- BULLETPROOF GREETING REMOVER ---
-            let aiReply = data.reply;
-            if (chatHistory.length > 0) {
-                // Violently strip out all repetitive greetings, names, and emojis if it is an ongoing chat
-                aiReply = aiReply.replace(/Hi[!,.]?\s*/gi, '');
-                aiReply = aiReply.replace(/Hello[!,.]?\s*/gi, '');
-                aiReply = aiReply.replace(/Thanks for (calling|chatting|reaching out)[^.]*\.?\s*/gi, '');
-                aiReply = aiReply.replace(/This is Sarah[.,!?]*\s*/gi, '');
-                aiReply = aiReply.replace(/How can I help you today\??\s*😊?/gi, '');
-                aiReply = aiReply.replace(/^[\s\-—]+/g, ''); // Clean up stray dashes or spaces
-                
-                // Capitalize first letter just in case the sentence got chopped
-                if (aiReply.length > 0) {
-                    aiReply = aiReply.charAt(0).toUpperCase() + aiReply.slice(1);
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                if (response.status === 429) {
+                    _appendAiMsg(messagesDiv, "You're sending messages a bit fast — please wait a moment.");
+                } else {
+                    _appendAiMsg(messagesDiv, errData.error || 'Sorry, something went wrong. Please try again.');
                 }
-                
-                // If Grok *only* said the greeting and nothing else
-                if (aiReply.trim() === '') {
-                    aiReply = "I'm ready to assist with that!";
-                }
+                _chatSending = false;
+                return;
             }
-            // ------------------------------------
 
-            // Add AI response
-            const aiDiv = document.createElement('div');
-            aiDiv.className = 'chat-msg chat-msg-ai';
-            aiDiv.textContent = aiReply;
-            messagesDiv.appendChild(aiDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            const data = await response.json();
 
-            // Save to conversation history
-            chatHistory.push({ role: "user", content: message });
-            chatHistory.push({ role: "assistant", content: aiReply });
+            // Persist the session ID returned by the server
+            if (data.chat_id && data.chat_id !== _chatSessionId) {
+                _chatSessionId = data.chat_id;
+                sessionStorage.setItem(CHAT_STORE_KEY, _chatSessionId);
+            }
+
+            _appendAiMsg(messagesDiv, data.reply || 'Sorry, I had trouble with that. Please try again.');
 
         } catch (error) {
             typingDiv.remove();
-            const errDiv = document.createElement('div');
-            errDiv.className = 'chat-msg chat-msg-error';
-            errDiv.textContent = 'Sorry, I am having trouble connecting to the server.';
-            messagesDiv.appendChild(errDiv);
+            _appendAiMsg(messagesDiv, 'Connection error — please check your internet and try again.');
+        } finally {
+            _chatSending = false;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
     }
+
+    function _appendAiMsg(container, text) {
+        const div = document.createElement('div');
+        div.className = 'chat-msg chat-msg-ai';
+        div.textContent = text;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    // Allow Shift+Enter for newline, Enter to send
+    document.getElementById('chat-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
 </script>
 </body>
 </html>
