@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- Added maximum-scale and user-scalable to prevent mobile auto-zoom bouncing -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <title>PickCall AI — Your Business Never Misses a Call</title>
+<meta name="description" content="PickCall AI is the Okanagan's first AI receptionist. 24/7 call answering, appointment booking, emotion detection, 12 languages, voice cloning, and more. Built in Kelowna, BC.">
+<link rel="icon" type="image/png" href="logo-dark.png">
+<meta property="og:image" content="logo-dark.png">
+<meta property="og:title" content="PickCall AI — Your Business Never Misses a Call">
+<meta property="og:description" content="AI receptionist with emotion detection, 12 languages, voice cloning, and ROI tracking. Built in Kelowna, BC.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -14,6 +18,7 @@
   --border:rgba(255,255,255,.06);--border-h:rgba(255,255,255,.12);
   --txt:#d4d4e0;--txt-d:#66668a;--txt-b:#f0f0ff;
   --cyan:#00e5ff;--violet:#8b5cf6;--rose:#f43f7a;--lime:#a3e635;--amber:#fbbf24;
+  --emerald:#34d399;
   --g1:linear-gradient(135deg,#00e5ff,#8b5cf6,#f43f7a);
   --serif:'Instrument Serif',Georgia,serif;
   --sans:'Sora',system-ui,sans-serif;
@@ -23,7 +28,7 @@
 }
 
 html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent}
-body{font-family:var(--sans);background:var(--void);color:var(--txt);-webkit-font-smoothing:antialiased}
+body{font-family:var(--sans);background:var(--void);color:var(--txt);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
 /* ═══ CANVAS BG ═══ */
 #meshCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6}
@@ -43,6 +48,7 @@ body::after{content:'';position:fixed;inset:0;opacity:.018;
 [data-r].v{opacity:1;transform:none}
 [data-r="1"]{transition-delay:.08s}[data-r="2"]{transition-delay:.16s}[data-r="3"]{transition-delay:.24s}
 [data-r="4"]{transition-delay:.32s}[data-r="5"]{transition-delay:.4s}[data-r="6"]{transition-delay:.48s}
+[data-r="7"]{transition-delay:.56s}[data-r="8"]{transition-delay:.64s}
 
 /* ═══ NAV ═══ */
 nav{position:fixed;top:0;width:100%;z-index:999;padding:1.1rem 2.5rem;display:flex;
@@ -50,8 +56,9 @@ nav{position:fixed;top:0;width:100%;z-index:999;padding:1.1rem 2.5rem;display:fl
   background:rgba(3,3,8,.65);border-bottom:1px solid var(--border);transition:all .4s var(--ease)}
 nav.s{padding:.7rem 2.5rem;background:rgba(3,3,8,.88)}
 .logo{display:flex;align-items:center;gap:.55rem;text-decoration:none}
-.logo-mark{width:34px;height:34px;border-radius:9px;background:var(--g1);display:grid;place-items:center;
-  font-size:.95rem;box-shadow:0 0 20px rgba(0,229,255,.2);animation:lPulse 3s ease-in-out infinite}
+.logo-mark{width:38px;height:38px;border-radius:9px;overflow:hidden;flex-shrink:0;
+  box-shadow:0 0 20px rgba(0,229,255,.2);animation:lPulse 3s ease-in-out infinite}
+.logo-mark img{width:100%;height:100%;object-fit:cover}
 @keyframes lPulse{0%,100%{box-shadow:0 0 20px rgba(0,229,255,.2)}50%{box-shadow:0 0 35px rgba(0,229,255,.35)}}
 .logo-t{font-weight:700;font-size:1.2rem;color:var(--txt-b);letter-spacing:-.02em}
 .logo-t em{font-style:normal;color:var(--cyan)}
@@ -79,7 +86,7 @@ nav.s{padding:.7rem 2.5rem;background:rgba(3,3,8,.88)}
   line-height:1;letter-spacing:-.04em;color:var(--txt-b);margin-bottom:1.8rem}
 .hero h1 i{font-family:var(--serif);font-style:italic;font-weight:400}
 .grad{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-p{font-size:1.15rem;color:var(--txt-d);max-width:520px;margin:0 auto 3rem;line-height:1.75;font-weight:300}
+.hero-p{font-size:1.15rem;color:var(--txt-d);max-width:560px;margin:0 auto 3rem;line-height:1.75;font-weight:300}
 .hero-btns{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap;margin-bottom:5rem}
 .btn-p{display:inline-flex;align-items:center;gap:.5rem;padding:.95rem 2.2rem;background:var(--cyan);
   color:var(--void);border:none;border-radius:60px;font-family:var(--sans);font-weight:700;
@@ -123,8 +130,6 @@ nav.s{padding:.7rem 2.5rem;background:rgba(3,3,8,.88)}
 .phone-name{font-size:1.3rem;font-weight:700;color:var(--txt-b);letter-spacing:-.01em}
 .phone-role{font-size:.65rem;color:var(--txt-d);letter-spacing:.05em}
 .phone-timer{font-size:.6rem;color:var(--txt-d);font-family:var(--mono);opacity:.5}
-
-/* SVG Wave */
 .wave-container{width:160px;height:44px}
 .wave-container svg{width:100%;height:100%}
 .wave-bar{fill:var(--cyan);rx:2}
@@ -132,8 +137,9 @@ nav.s{padding:.7rem 2.5rem;background:rgba(3,3,8,.88)}
 
 /* ═══ SOCIAL PROOF ═══ */
 .proof{padding:4rem 1.5rem;position:relative;z-index:1}
-.proof-inner{display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;max-width:900px;margin:0 auto;
+.proof-inner{display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;max-width:1000px;margin:0 auto;
   padding:2.5rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.st{text-align:center}
 .st-n{font-size:2.8rem;font-weight:800;background:var(--g1);-webkit-background-clip:text;
   -webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
 .st-l{font-size:.8rem;color:var(--txt-d);margin-top:.25rem}
@@ -161,9 +167,13 @@ section{position:relative;z-index:1;padding:7rem 1.5rem}
 .b-ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:1.2rem;margin-bottom:1rem}
 .b-ico-c{background:rgba(0,229,255,.08)}.b-ico-v{background:rgba(139,92,246,.08)}
 .b-ico-r{background:rgba(244,63,122,.08)}.b-ico-l{background:rgba(163,230,53,.08)}
-.b-ico-a{background:rgba(251,191,36,.08)}
+.b-ico-a{background:rgba(251,191,36,.08)}.b-ico-e{background:rgba(52,211,153,.08)}
 .b-t{font-size:1.05rem;font-weight:700;color:var(--txt-b);margin-bottom:.45rem}
 .b-d{font-size:.85rem;color:var(--txt-d);line-height:1.7}
+.b-tag{display:inline-block;margin-top:.8rem;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .6rem;border-radius:50px}
+.b-tag-new{background:rgba(52,211,153,.1);color:var(--emerald);border:1px solid rgba(52,211,153,.2)}
+.b-tag-pro{background:rgba(139,92,246,.1);color:var(--violet);border:1px solid rgba(139,92,246,.2)}
+.b-tag-ent{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.2)}
 
 /* Live wave in card */
 .card-wave{display:flex;align-items:end;gap:2.5px;height:32px;margin-top:1.2rem}
@@ -172,6 +182,49 @@ section{position:relative;z-index:1;padding:7rem 1.5rem}
 .card-wave i:nth-child(even){background:var(--violet);animation-delay:.15s}
 .card-wave i:nth-child(3n){animation-delay:.3s}
 @keyframes cw{0%,100%{height:6px;opacity:.25}50%{height:30px;opacity:.8}}
+
+/* ═══ PLATFORM SHOWCASE ═══ */
+.platform{max-width:1140px;margin:0 auto}
+.plat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+.plat-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;
+  padding:2rem 1.6rem;transition:all .5s var(--ease);position:relative;overflow:hidden}
+.plat-card:hover{transform:translateY(-6px);border-color:var(--border-h);background:var(--surface-h)}
+.plat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--g1);opacity:0;transition:opacity .4s}
+.plat-card:hover::before{opacity:1}
+.plat-icon{font-size:2.2rem;margin-bottom:1rem;display:block}
+.plat-title{font-size:1.1rem;font-weight:700;color:var(--txt-b);margin-bottom:.4rem}
+.plat-desc{font-size:.84rem;color:var(--txt-d);line-height:1.65}
+.plat-list{list-style:none;margin-top:.8rem;display:flex;flex-direction:column;gap:.35rem}
+.plat-list li{font-size:.8rem;color:var(--txt);display:flex;align-items:center;gap:.4rem}
+.plat-list li::before{content:'→';color:var(--cyan);font-size:.7rem;font-weight:700}
+
+/* ═══ EMOTION LIVE DEMO ═══ */
+.emo-demo{display:flex;gap:1.5rem;margin-top:2.5rem;align-items:stretch}
+.emo-transcript{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;flex-direction:column;gap:.6rem}
+.emo-line{display:flex;align-items:flex-start;gap:.7rem;font-size:.84rem;line-height:1.5;
+  opacity:0;animation:emoIn .6s var(--ease) forwards}
+.emo-line .role{font-weight:700;flex-shrink:0;font-size:.72rem;letter-spacing:.04em;width:55px}
+.emo-line .role-caller{color:var(--txt-b)}.emo-line .role-sarah{color:var(--cyan)}
+@keyframes emoIn{to{opacity:1}}
+.emo-meter{width:280px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;flex-direction:column;gap:.7rem}
+.emo-meter-title{font-size:.7rem;font-weight:700;color:var(--txt-d);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.3rem}
+.emo-bar-wrap{display:flex;align-items:center;gap:.6rem}
+.emo-emoji{font-size:1.1rem;flex-shrink:0}
+.emo-bar-track{flex:1;height:6px;background:rgba(255,255,255,.05);border-radius:6px;overflow:hidden}
+.emo-bar-fill{height:100%;border-radius:6px;transition:width 1.5s var(--ease)}
+.emo-bar-label{font-size:.68rem;color:var(--txt-d);min-width:26px;text-align:right}
+.emo-flag{margin-top:.5rem;padding:.5rem .8rem;background:rgba(244,63,122,.08);border:1px solid rgba(244,63,122,.15);
+  border-radius:8px;font-size:.72rem;color:var(--rose);display:flex;align-items:center;gap:.4rem;font-weight:600}
+
+/* ═══ LANGUAGE FLAGS ═══ */
+.lang-grid{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem;justify-content:center}
+.lang-chip{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .9rem;
+  background:var(--surface);border:1px solid var(--border);border-radius:50px;
+  font-size:.78rem;color:var(--txt-d);transition:all .4s var(--ease);cursor:default}
+.lang-chip:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px);
+  box-shadow:0 4px 20px rgba(0,229,255,.08)}
+.lang-chip .flag{font-size:1rem}
 
 /* ═══ HOW ═══ */
 .how{max-width:1000px;margin:0 auto}
@@ -202,15 +255,12 @@ section{position:relative;z-index:1;padding:7rem 1.5rem}
   color:var(--lime);font-weight:500;letter-spacing:.06em}
 .demo-status .sd{width:5px;height:5px;background:var(--lime);border-radius:50%;
   box-shadow:0 0 6px var(--lime);animation:dp 1.8s infinite}
-  
-/* AUDIO PLAYER */
 .audio-player{padding:1rem 2rem;border-bottom:1px solid var(--border);background:linear-gradient(90deg,rgba(0,229,255,.05),transparent);display:flex;align-items:center;gap:1.2rem}
 .play-btn{width:42px;height:42px;border-radius:50%;background:var(--cyan);color:var(--void);border:none;cursor:pointer;display:grid;place-items:center;font-size:1.1rem;flex-shrink:0;transition:all .3s var(--ease)}
 .play-btn:hover{transform:scale(1.08);box-shadow:0 0 20px rgba(0,229,255,.4)}
 .audio-track{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:6px;position:relative;overflow:hidden;cursor:pointer}
 .audio-fill{position:absolute;left:0;top:0;bottom:0;background:var(--g1);width:0%;pointer-events:none;transition:width .1s linear}
 .audio-time{font-size:.7rem;color:var(--txt-d);font-family:var(--mono);min-width:70px;text-align:right}
-
 .chat{padding:1.8rem 2rem;display:flex;flex-direction:column;gap:.9rem;min-height:280px}
 .msg{max-width:78%;padding:.85rem 1.15rem;border-radius:18px;font-size:.88rem;line-height:1.65;
   opacity:0;transform:translateY(12px) scale(.96);animation:msgIn .5s var(--ease-b) forwards}
@@ -228,6 +278,22 @@ section{position:relative;z-index:1;padding:7rem 1.5rem}
   animation:td 1.4s ease-in-out infinite}
 .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
 @keyframes td{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-5px)}}
+
+/* ═══ INTEGRATIONS ═══ */
+.integ{max-width:1000px;margin:0 auto}
+.integ-flow{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:3rem;flex-wrap:wrap}
+.integ-node{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:1.2rem 1.6rem;text-align:center;transition:all .4s var(--ease);min-width:120px}
+.integ-node:hover{transform:translateY(-4px);border-color:var(--border-h)}
+.integ-node .i-icon{font-size:1.8rem;margin-bottom:.35rem;display:block}
+.integ-node .i-name{font-size:.78rem;font-weight:600;color:var(--txt-b)}
+.integ-arrow{font-size:1.2rem;color:var(--cyan);opacity:.4}
+.hook-events{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:2rem}
+.hook-ev{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem;
+  transition:all .3s var(--ease)}
+.hook-ev:hover{border-color:rgba(0,229,255,.2);background:var(--surface-h)}
+.hook-ev code{display:block;font-family:var(--mono);font-size:.72rem;color:var(--cyan);margin-bottom:.3rem}
+.hook-ev span{font-size:.78rem;color:var(--txt-d)}
 
 /* ═══ PRICING ═══ */
 .prc{max-width:1140px;margin:0 auto}
@@ -248,6 +314,7 @@ section{position:relative;z-index:1;padding:7rem 1.5rem}
 .p-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:2rem;flex:1}
 .p-list li{font-size:.84rem;color:var(--txt);display:flex;align-items:center;gap:.55rem}
 .p-list li::before{content:'✓';color:var(--cyan);font-weight:700;font-size:.75rem;flex-shrink:0}
+.p-list li.new{color:var(--emerald)}.p-list li.new::before{content:'★';color:var(--emerald)}
 .p-list li.off{color:var(--txt-d);opacity:.35}.p-list li.off::before{content:'—';color:var(--txt-d)}
 .btn-tier{width:100%;padding:.85rem;border-radius:14px;font-family:var(--sans);font-weight:700;
   font-size:.9rem;cursor:pointer;transition:all .4s var(--ease);border:none;text-align:center;text-decoration:none;display:block}
@@ -255,6 +322,37 @@ section{position:relative;z-index:1;padding:7rem 1.5rem}
 .btn-o:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px)}
 .btn-f{background:var(--cyan);color:var(--void)}
 .btn-f:hover{box-shadow:0 14px 45px rgba(0,229,255,.3);transform:translateY(-2px)}
+
+/* ═══ COMPARISON ═══ */
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-top:3.5rem;align-items:stretch}
+.cmp-card{border-radius:24px;padding:2.4rem 2rem;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:transform .4s var(--ease)}
+.cmp-card:hover{transform:translateY(-6px)}
+.cmp-lose{background:linear-gradient(160deg,rgba(244,63,122,.07) 0%,rgba(244,63,122,.02) 100%);border:1px solid rgba(244,63,122,.18)}
+.cmp-meh{background:linear-gradient(160deg,rgba(251,191,36,.07) 0%,rgba(251,191,36,.02) 100%);border:1px solid rgba(251,191,36,.18)}
+.cmp-win{background:linear-gradient(160deg,rgba(0,229,255,.08) 0%,rgba(139,92,246,.06) 60%,rgba(3,3,8,.0) 100%);border:1.5px solid rgba(0,229,255,.3);box-shadow:0 0 60px rgba(0,229,255,.07),0 20px 60px rgba(0,0,0,.3)}
+.cmp-win::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--g1);border-radius:24px 24px 0 0}
+.cmp-label{display:inline-flex;align-items:center;gap:.5rem;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.4rem;padding:.28rem .8rem;border-radius:50px}
+.cmp-label-lose{background:rgba(244,63,122,.12);color:#f43f7a}
+.cmp-label-meh{background:rgba(251,191,36,.12);color:var(--amber)}
+.cmp-label-win{background:linear-gradient(90deg,rgba(0,229,255,.15),rgba(139,92,246,.15));color:var(--cyan);border:1px solid rgba(0,229,255,.2)}
+.cmp-icon{font-size:2.6rem;margin-bottom:1rem;display:block}
+.cmp-title{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.3rem}
+.cmp-title-lose{color:var(--txt-b)}
+.cmp-title-win{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cmp-rows{margin:1.4rem 0;display:flex;flex-direction:column;gap:.7rem;flex:1}
+.cmp-row{display:flex;align-items:flex-start;gap:.7rem;font-size:.84rem;line-height:1.5}
+.cmp-row-icon{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:.65rem;margin-top:.05rem}
+.cmp-row-x{background:rgba(244,63,122,.15);color:#f43f7a}
+.cmp-row-meh{background:rgba(251,191,36,.15);color:var(--amber)}
+.cmp-row-check{background:rgba(0,229,255,.12);color:var(--cyan)}
+.cmp-price{margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid rgba(255,255,255,.06)}
+.cmp-price-amt{font-size:2.4rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.cmp-price-lose{color:#f43f7a}.cmp-price-meh{color:var(--amber)}
+.cmp-price-win{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cmp-price-sub{font-size:.75rem;color:var(--txt-d);margin-top:.3rem;line-height:1.4}
+.cmp-best{position:absolute;top:1.1rem;right:1.1rem;background:var(--g1);color:var(--void);font-size:.6rem;font-weight:800;padding:.25rem .75rem;border-radius:50px;letter-spacing:.05em;text-transform:uppercase}
+.cmp-cta{display:block;margin-top:1.6rem;padding:.8rem 1.4rem;border-radius:12px;font-family:var(--sans);font-weight:700;font-size:.85rem;text-align:center;text-decoration:none;background:var(--cyan);color:var(--void);transition:all .3s var(--ease);cursor:pointer;border:none;width:100%}
+.cmp-cta:hover{box-shadow:0 8px 30px rgba(0,229,255,.35);transform:translateY(-2px)}
 
 /* ═══ ABOUT US ═══ */
 .about{max-width:800px;margin:0 auto;text-align:center}
@@ -339,10 +437,14 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
 .modal-success .success-icon{font-size:3.5rem;margin-bottom:1rem;display:block}
 .modal-success h4{font-size:1.3rem;font-weight:700;color:var(--txt-b);margin-bottom:.6rem}
 .modal-success p{font-size:.9rem;color:var(--txt-d);line-height:1.7}
-@media(max-width:900px){
-  .modal-box{padding:2rem 1.5rem}
-  .form-row{grid-template-columns:1fr}
-}
+
+/* ═══ FAQ ═══ */
+.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.6rem;cursor:pointer;transition:border-color .3s}
+.faq-item:hover{border-color:rgba(0,229,255,.25)}
+.faq-item summary{font-weight:700;color:var(--txt-b);font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq-item summary .faq-plus{color:var(--cyan);font-size:1.2rem;transition:transform .3s}
+.faq-item[open] summary .faq-plus{transform:rotate(45deg)}
+.faq-item p{margin-top:.9rem;font-size:.88rem;color:var(--txt-d);line-height:1.75}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
@@ -352,6 +454,13 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
   .steps::before{display:none}
   .price-grid{grid-template-columns:1fr;max-width:400px;margin-left:auto;margin-right:auto}
   .proof-inner{gap:2rem}
+  .plat-grid{grid-template-columns:1fr}
+  .emo-demo{flex-direction:column}.emo-meter{width:100%}
+  .hook-events{grid-template-columns:1fr}
+  .cmp-grid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto}
+  .integ-flow{gap:.8rem}.integ-arrow{display:none}
+  .form-row{grid-template-columns:1fr}
+  .modal-box{padding:2rem 1.5rem}
 }
 </style>
 </head>
@@ -363,11 +472,12 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
 <!-- NAV -->
 <nav id="nav">
   <a href="#" class="logo">
-    <div class="logo-mark">📞</div>
+    <div class="logo-mark"><img src="logo-dark.png" alt="PickCall AI"></div>
     <div class="logo-t">Pick<em>Call</em> AI</div>
   </a>
   <div class="n-links">
     <a href="#feat">Features</a>
+    <a href="#platform">Platform</a>
     <a href="#how">How It Works</a>
     <a href="#pricing">Pricing</a>
     <a href="#about">About Us</a>
@@ -377,9 +487,9 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
 
 <!-- HERO -->
 <section class="hero">
-  <div data-r><div class="hero-pill"><span class="dot"></span>🏆 Okanagan's First AI Receptionist — Powered by xAI Grok</div></div>
+  <div data-r><div class="hero-pill"><span class="dot"></span>🏆 Okanagan's First AI Receptionist — Now with Emotion Detection & 12 Languages</div></div>
   <h1 data-r="1">Your Business<br><i>Never</i> <span class="grad">Misses a Call</span></h1>
-  <p class="hero-p" data-r="2">Built by a local Okanagan shop owner who got tired of missing calls. Now every small business in the valley can have a 24/7 AI receptionist that actually sounds&nbsp;human.</p>
+  <p class="hero-p" data-r="2">AI receptionist that answers calls, books appointments, detects caller emotions, speaks 12 languages, and shows you exactly how much revenue Sarah captured — 24 hours a day, 7 days a week.</p>
   <div class="hero-btns" data-r="3">
     <a href="#" class="btn-p trial-btn" data-plan="">Start Free Trial →</a>
     <a href="#demo" class="btn-s">▶ &nbsp;See It Live</a>
@@ -405,23 +515,27 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
 <!-- SOCIAL PROOF -->
 <div class="proof">
   <div class="proof-inner">
-    <div data-r><div class="st-n" data-c="700" data-p="&lt;" data-s="ms">0</div><div class="st-l">Grok Response Time</div></div>
-    <div data-r="1"><div class="st-n" data-c="92" data-s="%">0</div><div class="st-l">#1 Audio Benchmark</div></div>
-    <div data-r="2"><div class="st-n" data-c="5" data-s="x Faster">0</div><div class="st-l">vs. OpenAI Realtime</div></div>
-    <div data-r="3"><div class="st-n" data-c="24" data-s="/7">0</div><div class="st-l">Always Answering</div></div>
+    <div class="st" data-r><div class="st-n" data-c="700" data-p="&lt;" data-s="ms">0</div><div class="st-l">Grok Response Time</div></div>
+    <div class="st" data-r="1"><div class="st-n" data-c="12" data-s=" Languages">0</div><div class="st-l">Auto-Detected</div></div>
+    <div class="st" data-r="2"><div class="st-n" data-c="24" data-s="/7">0</div><div class="st-l">Always Answering</div></div>
+    <div class="st" data-r="3"><div class="st-n" data-c="6" data-s=" Integrations">0</div><div class="st-l">Zapier, Make, n8n</div></div>
+    <div class="st" data-r="4"><div class="st-n" data-c="212" data-s="+">0</div><div class="st-l">API Endpoints</div></div>
   </div>
 </div>
 
-<!-- FEATURES -->
+<!-- ═══════════════════════════════════════════════════════════════
+     FEATURES BENTO — All v10 features
+     ═══════════════════════════════════════════════════════════════ -->
 <section id="feat" class="feat">
   <div data-r><div class="sec-l">Features</div></div>
   <div class="sec-t" data-r="1">Everything Your Front Desk Needs.<br>Without the Desk.</div>
   <div class="sec-s" data-r="2">Built for small businesses who care about every single caller.</div>
   <div class="bento">
+    <!-- Row 1: Voice AI (wide) + Smart Booking -->
     <div class="b-card c1" data-r="1">
       <div class="b-ico b-ico-c">🎙️</div>
       <div class="b-t">Human-Like Voice AI</div>
-      <div class="b-d">Powered by Grok's realtime voice engine — the same AI in millions of Tesla vehicles. Under 700ms response time. Callers genuinely can't tell the difference. We've tested it ourselves.</div>
+      <div class="b-d">Powered by Grok's realtime voice engine — the same AI in millions of Tesla vehicles. Under 700ms response time. Callers genuinely can't tell the difference.</div>
       <div class="card-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     </div>
     <div class="b-card c2" data-r="2">
@@ -429,31 +543,203 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
       <div class="b-t">Smart Booking</div>
       <div class="b-d">Collects name, contact, and preferred times. Confirms everything back. Zero double-bookings.</div>
     </div>
+
+    <!-- Row 2: Emotion Detection + Live Whisper + ROI Calculator -->
     <div class="b-card c3" data-r="3">
-      <div class="b-ico b-ico-r">⚡</div>
-      <div class="b-t">Instant Interruption</div>
-      <div class="b-d">Start talking and Sarah stops immediately. Natural turn-taking, just like a real conversation.</div>
+      <div class="b-ico b-ico-r">😠</div>
+      <div class="b-t">Caller Emotion Detection</div>
+      <div class="b-d">Real-time scoring of anger, frustration, urgency, happiness, and confusion. Escalation flags trigger instant alerts to you.</div>
+      <span class="b-tag b-tag-new">✦ New in v10</span>
     </div>
     <div class="b-card c4" data-r="4">
-      <div class="b-ico b-ico-l">🎯</div>
-      <div class="b-t">Lead Qualification</div>
-      <div class="b-d">Asks the right questions, identifies high-value prospects, and routes them with full context.</div>
+      <div class="b-ico b-ico-e">🎧</div>
+      <div class="b-t">Live Call Whisper</div>
+      <div class="b-d">Type a message during an active call — Sarah speaks it naturally. Coach your AI receptionist in real time.</div>
+      <span class="b-tag b-tag-new">✦ New in v10</span>
     </div>
     <div class="b-card c5" data-r="5">
-      <div class="b-ico b-ico-a">📊</div>
-      <div class="b-t">Call Analytics</div>
-      <div class="b-d">Every call logged with transcripts, duration, and sentiment. Search and export to your CRM.</div>
+      <div class="b-ico b-ico-a">💰</div>
+      <div class="b-t">ROI Dashboard</div>
+      <div class="b-d">"Sarah handled 47 calls = $11,750 captured revenue." See exactly what your AI receptionist earns you, daily.</div>
+      <span class="b-tag b-tag-new">✦ New in v10</span>
     </div>
+
+    <!-- Row 3: Multilingual (wide) + Voice Cloning (wide) -->
     <div class="b-card c6" data-r="3">
+      <div class="b-ico b-ico-l">🌍</div>
+      <div class="b-t">12-Language Auto-Detection</div>
+      <div class="b-d">Sarah detects the caller's language from their first few words and switches seamlessly mid-call. French, Spanish, Mandarin, Cantonese, Punjabi, Hindi, Arabic, Portuguese, Korean, Japanese, German — no configuration needed.</div>
+      <span class="b-tag b-tag-new">✦ New in v10</span>
+    </div>
+    <div class="b-card c7" data-r="4">
+      <div class="b-ico b-ico-v">🎤</div>
+      <div class="b-t">Custom Voice Cloning</div>
+      <div class="b-d">Upload a 30-second voice sample and Sarah speaks in your voice — or anyone on your team. Powered by Fish Audio with async training. Your callers hear a voice they recognize.</div>
+      <span class="b-tag b-tag-ent">Enterprise</span>
+    </div>
+
+    <!-- Row 4: Zapier + Call Analytics + Always On -->
+    <div class="b-card c3" data-r="5">
+      <div class="b-ico b-ico-c">⚡</div>
+      <div class="b-t">Zapier & Automations</div>
+      <div class="b-d">Pre-built webhook templates for Zapier, Make, and n8n. Trigger workflows on call complete, booking made, emotion escalation, and more.</div>
+      <span class="b-tag b-tag-new">✦ New in v10</span>
+    </div>
+    <div class="b-card c4" data-r="6">
+      <div class="b-ico b-ico-a">📊</div>
+      <div class="b-t">Call Analytics & Recordings</div>
+      <div class="b-d">Every call logged with full transcripts, waveform playback, duration, sentiment analysis, and exportable data.</div>
+    </div>
+    <div class="b-card c5" data-r="7">
+      <div class="b-ico b-ico-r">🛡️</div>
+      <div class="b-t">HIPAA Compliant</div>
+      <div class="b-d">Auto-PII redaction, audit logging, configurable retention, and encrypted storage for medical and dental practices.</div>
+      <span class="b-tag b-tag-ent">Enterprise</span>
+    </div>
+
+    <!-- Row 5: Built for Okanagan (wide) + Always On (wide) -->
+    <div class="b-card c6" data-r="5">
       <div class="b-ico b-ico-c">📍</div>
       <div class="b-t">Built for the Okanagan</div>
       <div class="b-d">Made right here in Kelowna by a local shop owner who lived this problem. Sarah knows the valley — she can reference local neighbourhoods, seasonal hours, and talk like a local does.</div>
     </div>
-    <div class="b-card c7" data-r="4">
-      <div class="b-ico b-ico-v">🛡️</div>
+    <div class="b-card c7" data-r="6">
+      <div class="b-ico b-ico-l">✨</div>
       <div class="b-t">Always On. Always Warm.</div>
       <div class="b-d">3 AM emergency? Holiday weekend? Sarah never sleeps, never calls in sick, and never has a bad day. Your callers always get the same exceptional experience.</div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PLATFORM SHOWCASE — The full dashboard
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="platform" class="platform" style="padding-top:5rem">
+  <div class="centered">
+    <div class="sec-l" data-r>The Platform</div>
+    <div class="sec-t" data-r="1">More Than a Receptionist.<br>A Complete <span class="grad">AI Call Center.</span></div>
+    <div class="sec-s" data-r="2" style="margin:0 auto">212 API endpoints. 22 routers. 14,000+ lines of production code. The most feature-rich AI receptionist platform available — period.</div>
+  </div>
+
+  <div class="plat-grid" data-r="3">
+    <div class="plat-card">
+      <span class="plat-icon">📞</span>
+      <div class="plat-title">Live Calls Dashboard</div>
+      <div class="plat-desc">Watch active calls in real time. See caller name, emotion state, call duration, and live transcript — all updating second by second.</div>
+      <ul class="plat-list">
+        <li>Real-time transcript stream</li>
+        <li>Emotion indicators per call</li>
+        <li>One-click call transfer</li>
+      </ul>
+    </div>
+    <div class="plat-card">
+      <span class="plat-icon">👥</span>
+      <div class="plat-title">CRM & Contacts</div>
+      <div class="plat-desc">Every caller becomes a contact automatically. Full history, notes, tags, and custom fields. Search across thousands of interactions.</div>
+      <ul class="plat-list">
+        <li>Auto-created contact profiles</li>
+        <li>Call history per contact</li>
+        <li>Custom tags and notes</li>
+      </ul>
+    </div>
+    <div class="plat-card">
+      <span class="plat-icon">📱</span>
+      <div class="plat-title">SMS & WhatsApp</div>
+      <div class="plat-desc">Two-way SMS conversations. Automated follow-ups after calls. Campaign blasts for promotions. WhatsApp integration coming soon.</div>
+      <ul class="plat-list">
+        <li>Post-call auto SMS</li>
+        <li>Two-way conversations</li>
+        <li>Campaign broadcasts</li>
+      </ul>
+    </div>
+    <div class="plat-card">
+      <span class="plat-icon">📈</span>
+      <div class="plat-title">ROI & Revenue Tracking</div>
+      <div class="plat-desc">See exactly what Sarah earns you. Calls handled, appointments booked, estimated revenue captured vs. a human receptionist at $25/hr.</div>
+      <ul class="plat-list">
+        <li>Daily ROI digest emails</li>
+        <li>Human cost comparison</li>
+        <li>Monthly trend charts</li>
+      </ul>
+    </div>
+    <div class="plat-card">
+      <span class="plat-icon">🔊</span>
+      <div class="plat-title">Recordings & Playback</div>
+      <div class="plat-desc">Full audio recordings with waveform visualization. Scrub to any point. Download for training or compliance review.</div>
+      <ul class="plat-list">
+        <li>Waveform audio player</li>
+        <li>Transcript sync</li>
+        <li>One-click download</li>
+      </ul>
+    </div>
+    <div class="plat-card">
+      <span class="plat-icon">💳</span>
+      <div class="plat-title">Billing & Stripe</div>
+      <div class="plat-desc">Self-serve billing powered by Stripe. Upgrade, downgrade, cancel anytime. Usage tracking, invoice history, and automatic renewals.</div>
+      <ul class="plat-list">
+        <li>Stripe-powered billing</li>
+        <li>Usage monitoring</li>
+        <li>Invoice history</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MULTILINGUAL — Language showcase
+     ═══════════════════════════════════════════════════════════════ -->
+<section style="position:relative;z-index:1;padding:5rem 1.5rem">
+  <div style="max-width:800px;margin:0 auto;text-align:center">
+    <div class="sec-l" data-r>Multilingual</div>
+    <div class="sec-t" data-r="1">Sarah Speaks<br><span class="grad">Their Language.</span></div>
+    <div class="sec-s" data-r="2" style="margin:0 auto">Auto-detects the caller's language from their first words. No buttons, no menus. Sarah just switches — mid-conversation if needed.</div>
+    <div class="lang-grid" data-r="3">
+      <div class="lang-chip"><span class="flag">🇬🇧</span> English</div>
+      <div class="lang-chip"><span class="flag">🇫🇷</span> French</div>
+      <div class="lang-chip"><span class="flag">🇪🇸</span> Spanish</div>
+      <div class="lang-chip"><span class="flag">🇨🇳</span> Mandarin</div>
+      <div class="lang-chip"><span class="flag">🇭🇰</span> Cantonese</div>
+      <div class="lang-chip"><span class="flag">🇮🇳</span> Punjabi</div>
+      <div class="lang-chip"><span class="flag">🇮🇳</span> Hindi</div>
+      <div class="lang-chip"><span class="flag">🇸🇦</span> Arabic</div>
+      <div class="lang-chip"><span class="flag">🇧🇷</span> Portuguese</div>
+      <div class="lang-chip"><span class="flag">🇰🇷</span> Korean</div>
+      <div class="lang-chip"><span class="flag">🇯🇵</span> Japanese</div>
+      <div class="lang-chip"><span class="flag">🇩🇪</span> German</div>
+    </div>
+    <p data-r="4" style="font-size:.85rem;color:var(--txt-d);margin-top:1.5rem;line-height:1.7">Perfect for the Okanagan's diverse community. Serve every customer in their native language — automatically.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTEGRATIONS — Zapier, Make, n8n
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="integ" style="padding-bottom:4rem">
+  <div class="centered">
+    <div class="sec-l" data-r>Integrations</div>
+    <div class="sec-t" data-r="1">Connect to <span class="grad">Everything.</span></div>
+    <div class="sec-s" data-r="2" style="margin:0 auto">Pre-built webhook templates with HMAC signatures. Trigger any workflow when calls, bookings, or escalations happen.</div>
+  </div>
+
+  <div class="integ-flow" data-r="3">
+    <div class="integ-node"><span class="i-icon">📞</span><span class="i-name">PickCall AI</span></div>
+    <span class="integ-arrow">→</span>
+    <div class="integ-node"><span class="i-icon">⚡</span><span class="i-name">Webhooks</span></div>
+    <span class="integ-arrow">→</span>
+    <div class="integ-node"><span class="i-icon">🔗</span><span class="i-name">Zapier</span></div>
+    <div class="integ-node"><span class="i-icon">🔧</span><span class="i-name">Make</span></div>
+    <div class="integ-node"><span class="i-icon">⚙️</span><span class="i-name">n8n</span></div>
+    <span class="integ-arrow">→</span>
+    <div class="integ-node"><span class="i-icon">📋</span><span class="i-name">Your CRM</span></div>
+  </div>
+
+  <div class="hook-events" data-r="4" style="max-width:900px;margin:2rem auto 0">
+    <div class="hook-ev"><code>call.completed</code><span>Fires when any call ends with full transcript</span></div>
+    <div class="hook-ev"><code>appointment.booked</code><span>New booking with caller details and time</span></div>
+    <div class="hook-ev"><code>emotion.escalation</code><span>Angry or frustrated caller detected</span></div>
+    <div class="hook-ev"><code>call.missed</code><span>Unanswered call with caller info</span></div>
+    <div class="hook-ev"><code>contact.created</code><span>New contact auto-created from call</span></div>
+    <div class="hook-ev"><code>voicemail.received</code><span>Voicemail with transcript and audio URL</span></div>
   </div>
 </section>
 
@@ -461,12 +747,12 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
 <section id="how" class="how">
   <div class="centered">
     <div class="sec-l" data-r>How It Works</div>
-    <div class="sec-t" data-r="1">Three Steps. Five Minutes.<br>You're Live.</div>
+    <div class="sec-t" data-r="1">Three Steps. 48 Hours.<br>You're Live.</div>
   </div>
   <div class="steps">
-    <div class="stp" data-r="1"><div class="stp-n"><span>1</span></div><div class="stp-t">Tell Us About Your Business</div><div class="stp-d">Your name, hours, services, and personality. Sarah is trained and ready in under 15 minutes.</div></div>
+    <div class="stp" data-r="1"><div class="stp-n"><span>1</span></div><div class="stp-t">Tell Us About Your Business</div><div class="stp-d">Your name, hours, services, and personality. We train Sarah on your specific business within 48 hours.</div></div>
     <div class="stp" data-r="2"><div class="stp-n"><span>2</span></div><div class="stp-t">Connect Your Phone</div><div class="stp-d">Forward your line to your PickCall number. Or get a fresh local number from us instantly.</div></div>
-    <div class="stp" data-r="3"><div class="stp-n"><span>3</span></div><div class="stp-t">Never Miss Again</div><div class="stp-d">Your AI answers 24/7. Review calls, transcripts, and bookings from your dashboard.</div></div>
+    <div class="stp" data-r="3"><div class="stp-n"><span>3</span></div><div class="stp-t">Never Miss Again</div><div class="stp-d">Sarah answers 24/7 with emotion detection, 12 languages, and full analytics from day one.</div></div>
   </div>
 </section>
 
@@ -479,12 +765,10 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
   </div>
   <div class="demo-box" data-r="3">
     <div class="demo-top">
-      <div class="demo-av">🎙</div>
-      <div><div class="demo-nm">Sarah — PickCall AI</div><div class="demo-rl">AI Receptionist • Grok Realtime Voice</div></div>
+      <div class="demo-av"><img src="logo-dark.png" alt="PickCall" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+      <div><div class="demo-nm">Sarah — PickCall AI</div><div class="demo-rl">AI Receptionist • Grok Realtime Voice • Emotion Active</div></div>
       <div class="demo-status"><span class="sd"></span>ACTIVE</div>
     </div>
-    
-    <!-- AUDIO PLAYER -->
     <div class="audio-player">
       <button class="play-btn" id="playDemoBtn" aria-label="Play Demo" onclick="toggleAudio()">▶</button>
       <div class="audio-track" id="audioTrack" onclick="seekAudio(event)">
@@ -493,7 +777,6 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
       <div class="audio-time" id="audioTime">0:00 / 0:45</div>
       <audio id="demoAudio" src="demo-call.mp3" preload="metadata"></audio>
     </div>
-
     <div class="chat">
       <div class="msg msg-ai">Hi! Thanks for calling PickCall AI, this is Sarah. How can I help you today?</div>
       <div class="msg msg-u">Hey, do you handle appointment booking for dental offices?</div>
@@ -518,9 +801,16 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
       <div class="p-amt">$199<span>/mo</span></div>
       <div class="p-desc">Perfect for solo practices and small shops getting started.</div>
       <ul class="p-list">
-        <li>AI Receptionist</li><li>Custom Greeting</li><li>Business Hours Handling</li>
-        <li>Call Logging</li><li>500 minutes / month</li><li>1 phone number</li>
-        <li class="off">Appointment Booking</li><li class="off">CRM Integration</li>
+        <li>AI Voice Receptionist</li>
+        <li>Custom Greeting & Personality</li>
+        <li>Business Hours Handling</li>
+        <li>Call Logging & Transcripts</li>
+        <li>SMS Notifications</li>
+        <li>500 minutes / month</li>
+        <li>1 phone number</li>
+        <li class="off">Appointment Booking</li>
+        <li class="off">Emotion Detection</li>
+        <li class="off">Multilingual</li>
       </ul>
       <a href="#" class="btn-tier btn-o trial-btn" data-plan="Starter">Start Free Trial</a>
     </div>
@@ -530,9 +820,17 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
       <div class="p-amt">$299<span>/mo</span></div>
       <div class="p-desc">For growing businesses that need the full receptionist experience.</div>
       <ul class="p-list">
-        <li>Everything in Starter</li><li>Appointment Booking</li><li>Lead Qualification</li>
-        <li>Call Transcripts</li><li>SMS Follow-ups</li><li>1,500 minutes / month</li>
-        <li>3 phone numbers</li><li class="off">CRM Integration</li>
+        <li>Everything in Starter</li>
+        <li>Appointment Booking</li>
+        <li>Lead Qualification</li>
+        <li>Call Recordings & Playback</li>
+        <li>SMS Follow-ups & Campaigns</li>
+        <li class="new">Caller Emotion Detection</li>
+        <li class="new">Live Call Whisper Coaching</li>
+        <li class="new">ROI Dashboard & Daily Digest</li>
+        <li>AI Call Coaching</li>
+        <li>1,500 minutes / month</li>
+        <li>3 phone numbers</li>
       </ul>
       <a href="#" class="btn-tier btn-f trial-btn" data-plan="Professional">Start Free Trial</a>
     </div>
@@ -541,50 +839,25 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
       <div class="p-amt">$399<span>/mo</span></div>
       <div class="p-desc">For multi-location businesses that demand the absolute best.</div>
       <ul class="p-list">
-        <li>Everything in Professional</li><li>Unlimited minutes</li><li>10 phone numbers</li>
-        <li>Custom AI Voice</li><li>CRM Integration</li><li>Analytics Dashboard</li>
-        <li>Priority Support</li><li>Dedicated Account Manager</li>
+        <li>Everything in Professional</li>
+        <li>Unlimited minutes</li>
+        <li>10 phone numbers</li>
+        <li class="new">Custom Voice Cloning</li>
+        <li class="new">12-Language Auto-Detection</li>
+        <li class="new">Zapier / Make / n8n Webhooks</li>
+        <li>HIPAA Compliance Mode</li>
+        <li>White Label Branding</li>
+        <li>Analytics Dashboard</li>
+        <li>Priority Support</li>
+        <li>Outbound Campaigns</li>
       </ul>
-      <a href="#" class="btn-tier btn-o">Contact Sales</a>
+      <a href="#" class="btn-tier btn-o trial-btn" data-plan="Enterprise">Contact Sales</a>
     </div>
   </div>
 </section>
 
 <!-- COMPARISON -->
 <section style="position:relative;z-index:1;padding:7rem 1.5rem">
-  <style>
-    .cmp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-top:3.5rem;align-items:stretch}
-    .cmp-card{border-radius:24px;padding:2.4rem 2rem;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:transform .4s var(--ease)}
-    .cmp-card:hover{transform:translateY(-6px)}
-    .cmp-lose{background:linear-gradient(160deg,rgba(244,63,122,.07) 0%,rgba(244,63,122,.02) 100%);border:1px solid rgba(244,63,122,.18)}
-    .cmp-meh{background:linear-gradient(160deg,rgba(251,191,36,.07) 0%,rgba(251,191,36,.02) 100%);border:1px solid rgba(251,191,36,.18)}
-    .cmp-win{background:linear-gradient(160deg,rgba(0,229,255,.08) 0%,rgba(139,92,246,.06) 60%,rgba(3,3,8,.0) 100%);border:1.5px solid rgba(0,229,255,.3);box-shadow:0 0 60px rgba(0,229,255,.07),0 20px 60px rgba(0,0,0,.3)}
-    .cmp-win::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--g1);border-radius:24px 24px 0 0}
-    .cmp-label{display:inline-flex;align-items:center;gap:.5rem;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.4rem;padding:.28rem .8rem;border-radius:50px}
-    .cmp-label-lose{background:rgba(244,63,122,.12);color:#f43f7a}
-    .cmp-label-meh{background:rgba(251,191,36,.12);color:var(--amber)}
-    .cmp-label-win{background:linear-gradient(90deg,rgba(0,229,255,.15),rgba(139,92,246,.15));color:var(--cyan);border:1px solid rgba(0,229,255,.2)}
-    .cmp-icon{font-size:2.6rem;margin-bottom:1rem;display:block}
-    .cmp-title{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.3rem}
-    .cmp-title-lose{color:var(--txt-b)}
-    .cmp-title-win{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .cmp-rows{margin:1.4rem 0;display:flex;flex-direction:column;gap:.7rem;flex:1}
-    .cmp-row{display:flex;align-items:flex-start;gap:.7rem;font-size:.84rem;line-height:1.5}
-    .cmp-row-icon{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:.65rem;margin-top:.05rem}
-    .cmp-row-x{background:rgba(244,63,122,.15);color:#f43f7a}
-    .cmp-row-meh{background:rgba(251,191,36,.15);color:var(--amber)}
-    .cmp-row-check{background:rgba(0,229,255,.12);color:var(--cyan)}
-    .cmp-price{margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid rgba(255,255,255,.06)}
-    .cmp-price-amt{font-size:2.4rem;font-weight:800;letter-spacing:-.03em;line-height:1}
-    .cmp-price-lose{color:#f43f7a}
-    .cmp-price-meh{color:var(--amber)}
-    .cmp-price-win{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .cmp-price-sub{font-size:.75rem;color:var(--txt-d);margin-top:.3rem;line-height:1.4}
-    .cmp-best{position:absolute;top:1.1rem;right:1.1rem;background:var(--g1);color:var(--void);font-size:.6rem;font-weight:800;padding:.25rem .75rem;border-radius:50px;letter-spacing:.05em;text-transform:uppercase}
-    .cmp-cta{display:block;margin-top:1.6rem;padding:.8rem 1.4rem;border-radius:12px;font-family:var(--sans);font-weight:700;font-size:.85rem;text-align:center;text-decoration:none;background:var(--cyan);color:var(--void);transition:all .3s var(--ease);cursor:pointer;border:none;width:100%}
-    .cmp-cta:hover{box-shadow:0 8px 30px rgba(0,229,255,.35);transform:translateY(-2px)}
-    @media(max-width:900px){.cmp-grid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto}}
-  </style>
   <div style="max-width:1000px;margin:0 auto">
     <div class="centered">
       <div data-r style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.18);border-radius:50px;padding:.3rem 1rem;font-family:var(--mono);font-size:.7rem;color:var(--cyan);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.2rem">Why PickCall</div>
@@ -592,8 +865,6 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
       <div data-r="2" style="font-size:1.1rem;color:var(--txt-d);max-width:480px;margin:0 auto;line-height:1.7;font-weight:300">One missed booking pays for a whole month of PickCall&nbsp;AI.</div>
     </div>
     <div class="cmp-grid" data-r="2">
-
-      <!-- VOICEMAIL -->
       <div class="cmp-card cmp-lose">
         <span class="cmp-label cmp-label-lose">❌ The Old Way</span>
         <span class="cmp-icon">📵</span>
@@ -602,15 +873,13 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
           <div class="cmp-row"><div class="cmp-row-icon cmp-row-x">✕</div><span style="color:var(--txt-d)">80% of callers hang up without leaving a message</span></div>
           <div class="cmp-row"><div class="cmp-row-icon cmp-row-x">✕</div><span style="color:var(--txt-d)">Caller immediately dials your competitor</span></div>
           <div class="cmp-row"><div class="cmp-row-icon cmp-row-x">✕</div><span style="color:var(--txt-d)">You never know what revenue you lost</span></div>
-          <div class="cmp-row"><div class="cmp-row-icon cmp-row-x">✕</div><span style="color:var(--txt-d)">Zero appointments booked after hours</span></div>
+          <div class="cmp-row"><div class="cmp-row-icon cmp-row-x">✕</div><span style="color:var(--txt-d)">No emotion awareness, no language support</span></div>
         </div>
         <div class="cmp-price">
           <div class="cmp-price-amt cmp-price-lose">$0<span style="font-size:1rem;font-weight:400">/mo</span></div>
           <div class="cmp-price-sub">but costs you thousands in lost bookings every month</div>
         </div>
       </div>
-
-      <!-- RECEPTIONIST -->
       <div class="cmp-card cmp-meh">
         <span class="cmp-label cmp-label-meh">⚠️ The Expensive Way</span>
         <span class="cmp-icon">🧑‍💼</span>
@@ -618,7 +887,7 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
         <div class="cmp-rows">
           <div class="cmp-row"><div class="cmp-row-icon cmp-row-meh">!</div><span style="color:var(--txt-d)">Works 9–5 only. Still misses after-hours calls</span></div>
           <div class="cmp-row"><div class="cmp-row-icon cmp-row-meh">!</div><span style="color:var(--txt-d)">Takes sick days, holidays, and vacations</span></div>
-          <div class="cmp-row"><div class="cmp-row-icon cmp-row-meh">!</div><span style="color:var(--txt-d)">Needs training, management, and HR</span></div>
+          <div class="cmp-row"><div class="cmp-row-icon cmp-row-meh">!</div><span style="color:var(--txt-d)">Speaks 1-2 languages max</span></div>
           <div class="cmp-row"><div class="cmp-row-icon cmp-row-meh">!</div><span style="color:var(--txt-d)">Wages, CPP, EI, vacation pay add up fast</span></div>
         </div>
         <div class="cmp-price">
@@ -626,8 +895,6 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
           <div class="cmp-price-sub">wages + CPP + EI + vacation pay (BC average)</div>
         </div>
       </div>
-
-      <!-- PICKCALL WIN -->
       <div class="cmp-card cmp-win">
         <div class="cmp-best">Best Value</div>
         <span class="cmp-label cmp-label-win">✦ The Smart Way</span>
@@ -636,8 +903,8 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
         <div class="cmp-rows">
           <div class="cmp-row"><div class="cmp-row-icon cmp-row-check">✓</div><span style="color:var(--txt)">Answers every call in under 700ms — always</span></div>
           <div class="cmp-row"><div class="cmp-row-icon cmp-row-check">✓</div><span style="color:var(--txt)">Books appointments 24/7 including 3am</span></div>
-          <div class="cmp-row"><div class="cmp-row-icon cmp-row-check">✓</div><span style="color:var(--txt)">Never sick, never on vacation, never has a bad day</span></div>
-          <div class="cmp-row"><div class="cmp-row-icon cmp-row-check">✓</div><span style="color:var(--txt)">Built locally in Kelowna — for Okanagan businesses</span></div>
+          <div class="cmp-row"><div class="cmp-row-icon cmp-row-check">✓</div><span style="color:var(--txt)">Detects emotions, speaks 12 languages</span></div>
+          <div class="cmp-row"><div class="cmp-row-icon cmp-row-check">✓</div><span style="color:var(--txt)">ROI dashboard proves its value daily</span></div>
         </div>
         <div class="cmp-price">
           <div class="cmp-price-amt cmp-price-win">$199<span style="font-size:1rem;font-weight:400;-webkit-text-fill-color:var(--txt-d)">/mo</span></div>
@@ -645,7 +912,6 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
         </div>
         <button class="cmp-cta trial-btn" data-plan="Professional">Start Free Trial →</button>
       </div>
-
     </div>
   </div>
 </section>
@@ -678,34 +944,17 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
       <div class="sec-t" data-r="1">Questions We Actually&nbsp;Get</div>
     </div>
     <div style="margin-top:3rem;display:flex;flex-direction:column;gap:1rem" data-r="2">
-      <details style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.6rem;cursor:pointer;transition:border-color .3s" onmouseover="this.style.borderColor='rgba(0,229,255,.25)'" onmouseout="this.style.borderColor='var(--border)'">
-        <summary style="font-weight:700;color:var(--txt-b);font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center">Will callers know they're talking to AI? <span style="color:var(--cyan);font-size:1.2rem">+</span></summary>
-        <p style="margin-top:.9rem;font-size:.88rem;color:var(--txt-d);line-height:1.75">Most don't. Sarah is built on Grok — xAI's voice engine that powers Tesla's in-car assistant and is used by millions of people daily. The response time is under 700ms and the voice is natural. We've had people ask to speak to "the girl who answered." If you want, you can disclose it upfront — we'll script that in for you.</p>
-      </details>
-      <details style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.6rem;cursor:pointer;transition:border-color .3s" onmouseover="this.style.borderColor='rgba(0,229,255,.25)'" onmouseout="this.style.borderColor='var(--border)'">
-        <summary style="font-weight:700;color:var(--txt-b);font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center">How long does setup take? <span style="color:var(--cyan);font-size:1.2rem">+</span></summary>
-        <p style="margin-top:.9rem;font-size:.88rem;color:var(--txt-d);line-height:1.75">About 15 minutes. You fill in your business details — name, hours, services, personality — and we train the AI on your specific business. Then you forward your phone number to your new PickCall line. That's it. We'll walk you through the whole thing on a setup call.</p>
-      </details>
-      <details style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.6rem;cursor:pointer;transition:border-color .3s" onmouseover="this.style.borderColor='rgba(0,229,255,.25)'" onmouseout="this.style.borderColor='var(--border)'">
-        <summary style="font-weight:700;color:var(--txt-b);font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center">What if a caller wants to speak to a real person? <span style="color:var(--cyan);font-size:1.2rem">+</span></summary>
-        <p style="margin-top:.9rem;font-size:.88rem;color:var(--txt-d);line-height:1.75">Sarah can warm-transfer the call to you or anyone on your team. If you're unavailable, she takes a message, books a callback, or sends the caller an SMS. No one falls through the cracks.</p>
-      </details>
-      <details style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.6rem;cursor:pointer;transition:border-color .3s" onmouseover="this.style.borderColor='rgba(0,229,255,.25)'" onmouseout="this.style.borderColor='var(--border)'">
-        <summary style="font-weight:700;color:var(--txt-b);font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center">Do I need to change my phone number? <span style="color:var(--cyan);font-size:1.2rem">+</span></summary>
-        <p style="margin-top:.9rem;font-size:.88rem;color:var(--txt-d);line-height:1.75">No. You just forward your existing number to your PickCall number — most phones do this in seconds. You can also get a fresh local Kelowna or Okanagan number from us if you prefer.</p>
-      </details>
-      <details style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.6rem;cursor:pointer;transition:border-color .3s" onmouseover="this.style.borderColor='rgba(0,229,255,.25)'" onmouseout="this.style.borderColor='var(--border)'">
-        <summary style="font-weight:700;color:var(--txt-b);font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center">Is my data stored? Is it private? <span style="color:var(--cyan);font-size:1.2rem">+</span></summary>
-        <p style="margin-top:.9rem;font-size:.88rem;color:var(--txt-d);line-height:1.75">Call transcripts and recordings are stored securely on Canadian servers and accessible only to you through your dashboard. We don't sell or share your data. You can delete any call record at any time.</p>
-      </details>
-      <details style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.6rem;cursor:pointer;transition:border-color .3s" onmouseover="this.style.borderColor='rgba(0,229,255,.25)'" onmouseout="this.style.borderColor='var(--border)'">
-        <summary style="font-weight:700;color:var(--txt-b);font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center">What industries work best? <span style="color:var(--cyan);font-size:1.2rem">+</span></summary>
-        <p style="margin-top:.9rem;font-size:.88rem;color:var(--txt-d);line-height:1.75">Any business that gets inbound calls and loses money when they're missed. Dental and medical clinics, law firms, real estate agents, plumbers, HVAC, salons, restaurants, auto shops, gyms — if your phone rings and you're not always able to answer it, PickCall AI is for you.</p>
-      </details>
+      <details class="faq-item"><summary>Will callers know they're talking to AI? <span class="faq-plus">+</span></summary><p>Most don't. Sarah is built on Grok — xAI's voice engine that powers Tesla's in-car assistant. The response time is under 700ms and the voice is natural. We've had people ask to speak to "the girl who answered."</p></details>
+      <details class="faq-item"><summary>How does emotion detection work? <span class="faq-plus">+</span></summary><p>Sarah analyzes keywords, speech patterns, punctuation, and vocal cues in real-time to score anger, frustration, urgency, confusion, and happiness. If a caller is upset, you get an instant escalation alert in your dashboard — before the call even ends.</p></details>
+      <details class="faq-item"><summary>Which languages does Sarah speak? <span class="faq-plus">+</span></summary><p>Sarah auto-detects and switches between 12 languages: English, French, Spanish, Mandarin, Cantonese, Punjabi, Hindi, Arabic, Portuguese, Korean, Japanese, and German. No setup needed — she detects the language from the caller's first words.</p></details>
+      <details class="faq-item"><summary>What's the Live Whisper feature? <span class="faq-plus">+</span></summary><p>While Sarah is on a live call, you can type a message from your dashboard — and Sarah will weave it naturally into the conversation. It's like coaching your receptionist in real time without the caller knowing.</p></details>
+      <details class="faq-item"><summary>How long does setup take? <span class="faq-plus">+</span></summary><p>About 48 hours. You fill in your business details — name, hours, services, personality — and we train the AI on your specific business. Then forward your phone number. That's it. We handle the setup and walk you through everything.</p></details>
+      <details class="faq-item"><summary>What if a caller wants a real person? <span class="faq-plus">+</span></summary><p>Sarah can warm-transfer to you or your team. If unavailable, she takes a message, books a callback, or sends an SMS. No one falls through the cracks.</p></details>
+      <details class="faq-item"><summary>Can I connect to my CRM / Zapier? <span class="faq-plus">+</span></summary><p>Yes. We have 6 pre-built webhook event types (call completed, appointment booked, emotion escalation, and more) with HMAC-signed payloads that work with Zapier, Make, n8n, or any custom integration.</p></details>
+      <details class="faq-item"><summary>Is my data private and secure? <span class="faq-plus">+</span></summary><p>All data is stored securely on Canadian servers and accessible only to you. Enterprise tier includes HIPAA compliance mode with auto-PII redaction and audit logging for medical practices.</p></details>
     </div>
   </div>
 </section>
-
 
 <!-- ABOUT US -->
 <section id="about" class="about">
@@ -719,7 +968,7 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
     </div>
     <div class="about-content" data-r="2">
       <p>I'm a local Okanagan shop owner — not a software company. I was losing customers every time I was with someone and couldn't pick up the phone. A missed call doesn't wait — they Google the next business on the list and you're done.</p>
-      <p>So I built the solution myself. PickCall AI is the <strong style="color:var(--txt-b)">Okanagan's first locally developed AI receptionist</strong>, built on xAI's Grok — the same voice AI powering millions of Tesla vehicles worldwide. It answers every call in under a second, books appointments, and handles enquiries 24/7.</p>
+      <p>So I built the solution myself. PickCall AI is the <strong style="color:var(--txt-b)">Okanagan's first locally developed AI receptionist</strong>, built on xAI's Grok — the same voice AI powering millions of Tesla vehicles. It answers every call in under a second, detects emotions, speaks 12 languages, books appointments, and shows you exactly how much revenue it captured.</p>
       <p>I built this to solve my own problem. Now I'm making it available to every local business in the valley that's tired of missing calls and missing revenue. <strong style="color:var(--cyan)">We're neighbours. I want you to win.</strong></p>
     </div>
   </div>
@@ -737,7 +986,7 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
 <!-- CTA -->
 <section class="cta-end">
   <h2 data-r>Ready to <span class="grad">Never Miss</span><br>Another Call?</h2>
-  <p data-r="1">The Okanagan's first AI receptionist. Built locally, for local businesses. Every missed call is revenue walking out the door — let's stop that.</p>
+  <p data-r="1">The Okanagan's first AI receptionist. Built locally, for local businesses. Emotion detection, 12 languages, live whisper coaching, ROI tracking — all from day one.</p>
   <div class="cta-btns" data-r="2">
     <a href="#" class="btn-p trial-btn" data-plan="">Start Your Free Trial →</a>
     <a href="tel:+17789240022" class="btn-s">📞 &nbsp;Call Our AI Demo</a>
@@ -764,50 +1013,22 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
         <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
         <input type="hidden" name="plan" id="planField" value="">
         <div class="form-row">
-          <div class="form-group">
-            <label for="bk-first">First Name *</label>
-            <input type="text" id="bk-first" name="first-name" placeholder="Jane" required>
-          </div>
-          <div class="form-group">
-            <label for="bk-last">Last Name *</label>
-            <input type="text" id="bk-last" name="last-name" placeholder="Smith" required>
-          </div>
+          <div class="form-group"><label for="bk-first">First Name *</label><input type="text" id="bk-first" name="first-name" placeholder="Jane" required></div>
+          <div class="form-group"><label for="bk-last">Last Name *</label><input type="text" id="bk-last" name="last-name" placeholder="Smith" required></div>
         </div>
-        <div class="form-group">
-          <label for="bk-email">Business Email *</label>
-          <input type="email" id="bk-email" name="email" placeholder="jane@yourbusiness.com" required>
-        </div>
-        <div class="form-group">
-          <label for="bk-phone">Phone Number *</label>
-          <input type="tel" id="bk-phone" name="phone" placeholder="+1 (778) 000-0000" required>
-        </div>
-        <div class="form-group">
-          <label for="bk-biz">Business Name *</label>
-          <input type="text" id="bk-biz" name="business-name" placeholder="Your Business Name" required>
-        </div>
-        <div class="form-group">
-          <label for="bk-industry">Industry</label>
+        <div class="form-group"><label for="bk-email">Business Email *</label><input type="email" id="bk-email" name="email" placeholder="jane@yourbusiness.com" required></div>
+        <div class="form-group"><label for="bk-phone">Phone Number *</label><input type="tel" id="bk-phone" name="phone" placeholder="+1 (778) 000-0000" required></div>
+        <div class="form-group"><label for="bk-biz">Business Name *</label><input type="text" id="bk-biz" name="business-name" placeholder="Your Business Name" required></div>
+        <div class="form-group"><label for="bk-industry">Industry</label>
           <select id="bk-industry" name="industry">
             <option value="">Select your industry</option>
-            <option>Dental Office</option>
-            <option>Law Firm</option>
-            <option>Real Estate</option>
-            <option>Medical Clinic</option>
-            <option>Plumbing / HVAC</option>
-            <option>Salon / Spa</option>
-            <option>Restaurant</option>
-            <option>Fitness Studio</option>
-            <option>Insurance</option>
-            <option>Auto Shop</option>
-            <option>Veterinary</option>
-            <option>Accounting</option>
-            <option>Other</option>
+            <option>Dental Office</option><option>Law Firm</option><option>Real Estate</option>
+            <option>Medical Clinic</option><option>Plumbing / HVAC</option><option>Salon / Spa</option>
+            <option>Restaurant</option><option>Fitness Studio</option><option>Insurance</option>
+            <option>Auto Shop</option><option>Veterinary</option><option>Accounting</option><option>Other</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="bk-msg">Anything else we should know?</label>
-          <textarea id="bk-msg" name="message" placeholder="Tell us about your call volume, hours, or any special needs..."></textarea>
-        </div>
+        <div class="form-group"><label for="bk-msg">Anything else we should know?</label><textarea id="bk-msg" name="message" placeholder="Tell us about your call volume, hours, or any special needs..."></textarea></div>
         <button type="submit" class="btn-submit" id="bookingSubmit">Request a Callback</button>
       </form>
     </div>
@@ -922,7 +1143,7 @@ document.querySelectorAll('[data-c]').forEach(el=>co.observe(el));
 /* ═══ CANVAS FADE ON SCROLL ═══ */
 addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opacity=Math.max(.2,1-scrollY/2500)});
 
-/* ═══ AUDIO PLAYER LOGIC ═══ */
+/* ═══ AUDIO PLAYER ═══ */
 (function(){
   const aEl=document.getElementById('demoAudio'),pBtn=document.getElementById('playDemoBtn'),aFill=document.getElementById('audioFill'),aTime=document.getElementById('audioTime'),aTrack=document.getElementById('audioTrack');
   let isPlaying=false;
@@ -932,7 +1153,7 @@ addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opaci
     if(isPlaying){aEl.pause();pBtn.innerHTML='▶';isPlaying=false}
     else{
         aEl.play().catch(e=>{
-            alert('Almost ready! You just need to upload a recording of your AI named "demo-call.mp3" to your GitHub repository.');
+            alert('Upload a recording named "demo-call.mp3" to hear the live demo.');
             pBtn.innerHTML='▶';isPlaying=false;
         });
         pBtn.innerHTML='⏸';isPlaying=true;
@@ -1012,9 +1233,15 @@ addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opaci
     });
   });
 })();
+
+/* ═══ LANGUAGE CHIPS ANIMATION ═══ */
+(function(){
+  const chips=document.querySelectorAll('.lang-chip');
+  chips.forEach((c,i)=>{c.style.animationDelay=(i*.08)+'s'});
+})();
 </script>
 
-<!-- Chat Widget Styles -->
+<!-- ═══ CHAT WIDGET ═══ -->
 <style>
 #ai-chat-bubble{position:fixed;bottom:25px;right:20px;width:60px;height:60px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:999999;transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s;background:linear-gradient(135deg,#00e5ff,#8b5cf6);box-shadow:0 4px 20px rgba(0,229,255,.3),0 0 40px rgba(139,92,246,.15)}
 #ai-chat-bubble:hover{transform:scale(1.1);box-shadow:0 4px 28px rgba(0,229,255,.45),0 0 60px rgba(139,92,246,.25)}
@@ -1030,18 +1257,13 @@ addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opaci
 #ai-chat-window .chat-header-actions .end-btn{font-size:11px;padding:5px 10px}
 #ai-chat-window .chat-header-actions .close-btn{font-size:14px;padding:4px 8px;line-height:1}
 #ai-chat-window .chat-header-actions button:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15)}
-#chat-messages{flex:1;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:transparent;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
-#chat-messages::-webkit-scrollbar{width:4px}
-#chat-messages::-webkit-scrollbar-track{background:transparent}
-#chat-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+#chat-messages{flex:1;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
 .chat-msg{padding:10px 14px;max-width:82%;font-size:13px;line-height:1.5;animation:chatMsgIn .3s cubic-bezier(.4,0,.2,1)}
 .chat-msg-ai{align-self:flex-start;background:rgba(0,229,255,.08);color:#d4d4e0;border-radius:2px 12px 12px 12px;border:1px solid rgba(0,229,255,.1)}
 .chat-msg-user{align-self:flex-end;background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(0,229,255,.15));color:#f0f0ff;border-radius:12px 2px 12px 12px;border:1px solid rgba(139,92,246,.15)}
-.chat-msg-typing{align-self:flex-start;background:rgba(0,229,255,.06);color:#66668a;border-radius:2px 12px 12px 12px;border:1px solid rgba(0,229,255,.06);font-style:italic;display:flex;align-items:center;gap:4px}
+.chat-msg-typing{align-self:flex-start;background:rgba(0,229,255,.06);color:#66668a;border-radius:2px 12px 12px 12px;border:1px solid rgba(0,229,255,.06);display:flex;align-items:center;gap:4px}
 .chat-msg-typing .dot{width:5px;height:5px;background:#00e5ff;border-radius:50%;opacity:.4;animation:typingDot 1.4s infinite}
-.chat-msg-typing .dot:nth-child(2){animation-delay:.2s}
-.chat-msg-typing .dot:nth-child(3){animation-delay:.4s}
-.chat-msg-error{align-self:flex-start;background:rgba(244,63,122,.1);color:#f43f7a;border-radius:2px 12px 12px 12px;border:1px solid rgba(244,63,122,.12)}
+.chat-msg-typing .dot:nth-child(2){animation-delay:.2s}.chat-msg-typing .dot:nth-child(3){animation-delay:.4s}
 #ai-chat-window .chat-input-area{padding:12px 14px;background:rgba(255,255,255,.02);border-top:1px solid rgba(255,255,255,.06);display:flex;gap:8px;align-items:center}
 #chat-input{flex:1;padding:10px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:24px;outline:none;color:#f0f0ff;font-family:'Sora',sans-serif;font-size:13px;transition:border-color .2s,box-shadow .2s}
 #chat-input::placeholder{color:#66668a}
@@ -1050,188 +1272,88 @@ addEventListener('scroll',()=>{document.getElementById('meshCanvas').style.opaci
 #ai-chat-window .send-btn:hover{transform:scale(1.08);box-shadow:0 2px 16px rgba(0,229,255,.3)}
 @keyframes chatMsgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes typingDot{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
-
-/* Fix Mobile Zoom & Bounce */
 @media(max-width:480px){
-    #ai-chat-window{width:calc(100% - 24px);right:12px;bottom:84px;height:65dvh;max-height:450px}
-    #chat-input{font-size:16px !important} /* Critical: Natively prevents iOS auto-zoom */
+  #ai-chat-window{width:calc(100% - 24px);right:12px;bottom:84px;height:65dvh;max-height:450px}
+  #chat-input{font-size:16px !important}
 }
 </style>
 
-<!-- Chat Bubble Button -->
 <div id="ai-chat-bubble" onclick="toggleChat()">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
 </div>
 
-<!-- Chat Window -->
 <div id="ai-chat-window">
-    <!-- Header -->
-    <div class="chat-header">
-        <div class="chat-header-left">
-            <div class="chat-avatar">&#127908;</div>
-            <div class="chat-header-info">
-                <div class="chat-name">Sarah &mdash; PickCall AI</div>
-                <div class="chat-status">Online</div>
-            </div>
-        </div>
-        <div class="chat-header-actions">
-            <button class="end-btn" onclick="endChat()">End Chat</button>
-            <button class="close-btn" onclick="toggleChat()">&times;</button>
-        </div>
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <div class="chat-avatar"><img src="logo-dark.png" alt="PickCall" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+      <div class="chat-header-info">
+        <div class="chat-name">Sarah &mdash; PickCall AI</div>
+        <div class="chat-status">Online</div>
+      </div>
     </div>
-
-    <!-- Messages Area -->
-    <div id="chat-messages">
-        <div class="chat-msg chat-msg-ai">
-            Hi there! I'm Sarah, the AI assistant. Would you like to book an appointment or ask a question about our services?
-        </div>
+    <div class="chat-header-actions">
+      <button class="end-btn" onclick="endChat()">End Chat</button>
+      <button class="close-btn" onclick="toggleChat()">&times;</button>
     </div>
-
-    <!-- Input Area -->
-    <div class="chat-input-area">
-        <input type="text" id="chat-input" placeholder="Type your message..." onkeypress="if(event.key === 'Enter') sendMessage()">
-        <button class="send-btn" onclick="sendMessage()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-        </button>
-    </div>
+  </div>
+  <div id="chat-messages">
+    <div class="chat-msg chat-msg-ai">Hi there! I'm Sarah, the AI assistant. Would you like to book an appointment or ask a question about our services?</div>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Type your message...">
+    <button class="send-btn" onclick="sendMessage()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+    </button>
+  </div>
 </div>
 
 <script>
-    // ══════════════════════════════════════════════════════════════
-    // CHAT WIDGET v5.1 — Server-side persistent session memory
-    //
-    // How it works:
-    //   1. First message → chat_id is "" → server creates a new session,
-    //      returns chat_id in the response.
-    //   2. We store that chat_id in sessionStorage (persists across page
-    //      refreshes, cleared when the tab/browser is closed).
-    //   3. Every subsequent message sends chat_id back → server loads the
-    //      full conversation from the DB and continues seamlessly.
-    //   4. The server sends the FULL history to Grok on every turn, so
-    //      the AI never forgets and never re-greets mid-conversation.
-    //   5. "New Chat" button wipes the sessionStorage key and starts fresh.
-    // ══════════════════════════════════════════════════════════════
+const CHAT_API_BASE='https://pickcall-ai.onrender.com';
+const CHAT_CLIENT_ID='pickcall_demo';
+const CHAT_STORE_KEY='pc_session_'+CHAT_CLIENT_ID;
+let _chatSessionId=sessionStorage.getItem(CHAT_STORE_KEY)||'';
+let _chatSending=false;
 
-    const CHAT_API_BASE  = 'https://pickcall-ai.onrender.com';
-    const CHAT_CLIENT_ID = 'pickcall_demo';
-    const CHAT_STORE_KEY = 'pc_session_' + CHAT_CLIENT_ID;
-
-    let _chatSessionId = sessionStorage.getItem(CHAT_STORE_KEY) || '';
-    let _chatSending   = false;
-
-    function toggleChat() {
-        const chatWindow = document.getElementById('ai-chat-window');
-        const isHidden = chatWindow.style.display === 'none' || chatWindow.style.display === '';
-        chatWindow.style.display = isHidden ? 'flex' : 'none';
-        if (isHidden) {
-            setTimeout(() => document.getElementById('chat-input').focus(), 100);
-        }
-    }
-
-    function endChat() {
-        // "New Chat" — wipe the session so next message starts fresh
-        _chatSessionId = '';
-        sessionStorage.removeItem(CHAT_STORE_KEY);
-
-        const messagesDiv = document.getElementById('chat-messages');
-        messagesDiv.innerHTML = '';
-        const div = document.createElement('div');
-        div.className = 'chat-msg chat-msg-ai';
-        div.textContent = 'Chat ended. How else can I help you today?';
-        messagesDiv.appendChild(div);
-    }
-
-    function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.appendChild(document.createTextNode(str));
-        return div.innerHTML;
-    }
-
-    async function sendMessage() {
-        if (_chatSending) return;
-
-        const input = document.getElementById('chat-input');
-        const message = input.value.trim();
-        if (!message) return;
-
-        _chatSending = true;
-        const messagesDiv = document.getElementById('chat-messages');
-
-        // Show user message
-        const userDiv = document.createElement('div');
-        userDiv.className = 'chat-msg chat-msg-user';
-        userDiv.textContent = message;
-        messagesDiv.appendChild(userDiv);
-        input.value = '';
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-        // Show typing indicator
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'chat-msg chat-msg-typing';
-        typingDiv.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
-        messagesDiv.appendChild(typingDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-        try {
-            const response = await fetch(
-                `${CHAT_API_BASE}/api/chat/${encodeURIComponent(CHAT_CLIENT_ID)}`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: message,
-                        chat_id: _chatSessionId   // "" on first message, session ID thereafter
-                    })
-                }
-            );
-
-            typingDiv.remove();
-
-            if (!response.ok) {
-                const errData = await response.json().catch(() => ({}));
-                if (response.status === 429) {
-                    _appendAiMsg(messagesDiv, "You're sending messages a bit fast — please wait a moment.");
-                } else {
-                    _appendAiMsg(messagesDiv, errData.error || 'Sorry, something went wrong. Please try again.');
-                }
-                _chatSending = false;
-                return;
-            }
-
-            const data = await response.json();
-
-            // Persist the session ID returned by the server
-            if (data.chat_id && data.chat_id !== _chatSessionId) {
-                _chatSessionId = data.chat_id;
-                sessionStorage.setItem(CHAT_STORE_KEY, _chatSessionId);
-            }
-
-            _appendAiMsg(messagesDiv, data.reply || 'Sorry, I had trouble with that. Please try again.');
-
-        } catch (error) {
-            typingDiv.remove();
-            _appendAiMsg(messagesDiv, 'Connection error — please check your internet and try again.');
-        } finally {
-            _chatSending = false;
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-    }
-
-    function _appendAiMsg(container, text) {
-        const div = document.createElement('div');
-        div.className = 'chat-msg chat-msg-ai';
-        div.textContent = text;
-        container.appendChild(div);
-        container.scrollTop = container.scrollHeight;
-    }
-
-    // Allow Shift+Enter for newline, Enter to send
-    document.getElementById('chat-input').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    });
+function toggleChat(){
+  const w=document.getElementById('ai-chat-window');
+  const h=w.style.display==='none'||w.style.display==='';
+  w.style.display=h?'flex':'none';
+  if(h)setTimeout(()=>document.getElementById('chat-input').focus(),100);
+}
+function endChat(){
+  _chatSessionId='';sessionStorage.removeItem(CHAT_STORE_KEY);
+  const m=document.getElementById('chat-messages');m.innerHTML='';
+  const d=document.createElement('div');d.className='chat-msg chat-msg-ai';
+  d.textContent='Chat ended. How else can I help you today?';m.appendChild(d);
+}
+function escapeHtml(s){const d=document.createElement('div');d.appendChild(document.createTextNode(s));return d.innerHTML}
+async function sendMessage(){
+  if(_chatSending)return;
+  const input=document.getElementById('chat-input');
+  const message=input.value.trim();if(!message)return;
+  _chatSending=true;
+  const md=document.getElementById('chat-messages');
+  const ud=document.createElement('div');ud.className='chat-msg chat-msg-user';ud.textContent=message;md.appendChild(ud);
+  input.value='';md.scrollTop=md.scrollHeight;
+  const td=document.createElement('div');td.className='chat-msg chat-msg-typing';
+  td.innerHTML='<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+  md.appendChild(td);md.scrollTop=md.scrollHeight;
+  try{
+    const r=await fetch(`${CHAT_API_BASE}/api/chat/${encodeURIComponent(CHAT_CLIENT_ID)}`,
+      {method:'POST',headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({message:message,chat_id:_chatSessionId})});
+    td.remove();
+    if(!r.ok){const e=await r.json().catch(()=>({}));
+      _appendAiMsg(md,r.status===429?"You're sending messages too fast.":e.error||'Something went wrong.');
+      _chatSending=false;return;}
+    const data=await r.json();
+    if(data.chat_id&&data.chat_id!==_chatSessionId){_chatSessionId=data.chat_id;sessionStorage.setItem(CHAT_STORE_KEY,_chatSessionId);}
+    _appendAiMsg(md,data.reply||'Sorry, please try again.');
+  }catch(e){td.remove();_appendAiMsg(md,'Connection error — please try again.');}
+  finally{_chatSending=false;md.scrollTop=md.scrollHeight;}
+}
+function _appendAiMsg(c,t){const d=document.createElement('div');d.className='chat-msg chat-msg-ai';d.textContent=t;c.appendChild(d);c.scrollTop=c.scrollHeight;}
+document.getElementById('chat-input').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
 </script>
 </body>
 </html>
