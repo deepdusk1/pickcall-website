@@ -631,8 +631,8 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
 
     <!-- Row 2: Jacob — Live Lookups (FULL WIDTH) -->
     <div class="b-card" data-r="2" style="grid-column:span 12;border-color:rgba(163,230,53,.12);background:linear-gradient(135deg,rgba(163,230,53,.03),rgba(0,229,255,.02))">
-      <div style="display:flex;gap:2.5rem;align-items:center;flex-wrap:wrap">
-        <div style="flex:1;min-width:280px">
+      <div class="duo-highlight-shell" style="display:flex;gap:2.5rem;align-items:center;flex-wrap:wrap">
+        <div class="duo-highlight-copy" style="flex:1;min-width:280px">
           <div class="b-ico b-ico-j">🔍</div>
           <div class="b-t" style="font-size:1.2rem">Sarah + Jacob For Deeper Business Work</div>
           <div class="b-d">If callers ask what is in stock, what it costs, or whether a customer record exists, Jacob can work behind the scenes while Sarah stays on the call. That is especially useful for auto parts, furniture, suppliers, and businesses that rely on older web portals with no API.</div>
@@ -641,7 +641,7 @@ footer{border-top:1px solid var(--border);padding:2.5rem 1.5rem;position:relativ
             <span class="b-tag b-tag-pro">Non-API portal friendly</span>
           </div>
         </div>
-        <div style="min-width:240px;max-width:300px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:14px;padding:1.2rem;font-family:var(--mono);font-size:.72rem;line-height:1.8">
+        <div class="duo-highlight-demo" style="min-width:240px;max-width:300px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:14px;padding:1.2rem;font-family:var(--mono);font-size:.72rem;line-height:1.8">
           <div style="color:var(--txt-d);margin-bottom:.6rem;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-family:var(--sans)">Example call</div>
           <div><span style="color:var(--txt-d)">Caller:</span> <span style="color:var(--txt)">Do you have that sectional in grey?</span></div>
           <div><span style="color:var(--cyan)">Sarah:</span> <span style="color:var(--txt)">Let me check that for you right now.</span></div>
@@ -2626,6 +2626,250 @@ nav.s{
   .phone-screen-inner{inset:74px 0 28px}
   .phone-name{font-size:1.72rem}
   .wave-container{width:154px}
+}
+
+@media (max-width:640px){
+  nav{
+    top:.55rem;
+    width:calc(100% - .75rem);
+    padding:.8rem .75rem .72rem;
+    border-radius:24px;
+    gap:.7rem;
+  }
+  nav.s{padding:.74rem .75rem .68rem}
+  .logo-t{font-size:1rem}
+  .n-links{
+    gap:.4rem;
+    padding-bottom:.05rem;
+    padding-right:.15rem;
+    scroll-snap-type:x proximity;
+  }
+  .n-links a{
+    padding:.5rem .72rem;
+    font-size:.76rem;
+    scroll-snap-align:start;
+  }
+  .hero{
+    padding:8.4rem 1rem 3rem;
+    text-align:left;
+  }
+  .hero-shell{gap:1.5rem}
+  .hero-pill{
+    margin-bottom:1.1rem;
+    font-size:.67rem;
+    letter-spacing:.16em;
+  }
+  .hero h1{
+    font-size:clamp(2.35rem,12.4vw,3.9rem);
+    line-height:.98;
+  }
+  .hero-p{
+    margin-bottom:1.55rem;
+    font-size:.98rem;
+    line-height:1.68;
+  }
+  .hero-btns{
+    gap:.75rem;
+    align-items:stretch;
+  }
+  .hero-btns .btn-p,
+  .hero-btns .btn-s{
+    width:100%;
+    justify-content:center;
+  }
+  .hero-notes{gap:.75rem}
+  .hero-note{
+    padding:1rem 1.05rem;
+    border-radius:18px;
+  }
+  section{
+    padding-top:4.5rem;
+    padding-bottom:4.5rem;
+  }
+  .sec-t{
+    font-size:clamp(1.95rem,10vw,2.85rem);
+    line-height:1.02;
+  }
+  .sec-s{
+    font-size:.96rem;
+    line-height:1.7;
+  }
+  .hero-stage{
+    padding-top:.55rem;
+    gap:.85rem;
+  }
+  .hero-stage::before{
+    inset:10% 4% 22%;
+    border-radius:24px;
+  }
+  .hero-stage-badge{
+    padding:.8rem .9rem;
+    max-width:none;
+  }
+  .hero-stage-summary{
+    width:100%;
+    gap:.65rem;
+  }
+  .hero-stage-card{
+    padding:.92rem 1rem;
+    border-radius:18px;
+  }
+  .phone-scene{
+    width:min(100%,236px);
+    height:470px;
+  }
+  .phone-screen-inner{inset:68px 0 24px}
+  .phone-status{
+    padding:0 1rem;
+    font-size:.7rem;
+  }
+  .phone-avatar{
+    width:74px;
+    height:74px;
+    font-size:1.6rem;
+  }
+  .phone-name{font-size:1.52rem}
+  .phone-role{
+    font-size:.7rem;
+    letter-spacing:.1em;
+  }
+  .wave-container{
+    width:138px;
+    height:40px;
+  }
+  .phone-actions{
+    gap:.8rem;
+    margin-top:.35rem;
+  }
+  .phone-action-mic,
+  .phone-action-end{
+    width:30px;
+    height:30px;
+  }
+  .phone-action-live{width:40px}
+  .b-card,
+  .fit-card,
+  .p-card,
+  .cmp-card{
+    padding:1.35rem 1.1rem;
+    border-radius:22px;
+  }
+  .demo-box,
+  .about-content{
+    border-radius:22px;
+  }
+  .duo-highlight-shell{gap:1rem !important}
+  .duo-highlight-copy,
+  .duo-highlight-demo{
+    min-width:0 !important;
+    max-width:none !important;
+    width:100%;
+  }
+  .duo-highlight-demo{
+    padding:1rem !important;
+    font-size:.68rem !important;
+    line-height:1.7 !important;
+  }
+  .sj-demo{max-width:none}
+  .sj-demo::before{left:14px}
+  .sj-step{
+    gap:.85rem;
+    margin-bottom:1rem;
+  }
+  .sj-bubble{
+    padding:.85rem .9rem;
+    border-radius:16px;
+  }
+  .sj-txt{font-size:.82rem}
+  .fit-note{
+    padding:1rem 1.05rem;
+    line-height:1.65;
+  }
+  .lang-grid{gap:.5rem}
+  .lang-chip{
+    padding:.38rem .78rem;
+    font-size:.74rem;
+  }
+  .demo-box{margin-top:2rem}
+  .demo-top{
+    padding:1.15rem 1rem;
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+  .demo-status{
+    margin-left:0;
+    width:100%;
+    justify-content:flex-start;
+  }
+  .audio-player,
+  .audio-player--demo{
+    padding:1rem;
+    gap:.8rem;
+  }
+  .audio-player--demo .audio-time{
+    min-width:0;
+    width:100%;
+    text-align:left;
+  }
+  .demo-call-link{
+    width:100%;
+    justify-content:center;
+  }
+  .demo .chat{padding:1rem}
+  .msg{
+    max-width:100%;
+    padding:.78rem .95rem;
+    font-size:.84rem;
+  }
+  .price-grid,
+  .cmp-grid{
+    gap:1rem;
+    margin-top:2.2rem;
+  }
+  .p-amt{font-size:2.8rem}
+  .pop,
+  .cmp-best{
+    position:static;
+    display:inline-flex;
+    align-self:flex-start;
+    margin-bottom:.9rem;
+  }
+  .about-content{
+    padding:1.45rem 1.1rem;
+  }
+  .grok,
+  .cta-end{
+    padding-top:4rem;
+    padding-bottom:4.5rem;
+  }
+  .foot{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .f-links{
+    gap:1rem;
+    flex-wrap:wrap;
+  }
+}
+
+@media (max-width:390px){
+  .n-links a{
+    padding:.46rem .64rem;
+    font-size:.72rem;
+  }
+  .hero{
+    padding-top:8.15rem;
+  }
+  .phone-scene{
+    width:min(100%,224px);
+    height:446px;
+  }
+  .phone-avatar{
+    width:68px;
+    height:68px;
+  }
+  .phone-name{font-size:1.42rem}
+  .wave-container{width:128px}
 }
 </style>
 </body>
