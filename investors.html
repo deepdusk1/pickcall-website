@@ -219,6 +219,89 @@ h1{
   .hero-actions{flex-direction:column}
   .btn{width:100%}
 }
+
+@media (max-width:640px){
+  body{overflow-x:hidden}
+  section{padding:4rem 0}
+  nav{
+    top:.65rem;
+    margin-top:.65rem;
+    width:calc(100% - .8rem);
+    padding:.8rem .75rem;
+    border-radius:24px;
+    gap:.7rem;
+  }
+  .logo span{font-size:1rem}
+  .nav-links{
+    width:100%;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    gap:.4rem;
+    padding-bottom:.05rem;
+    scrollbar-width:none;
+    scroll-snap-type:x proximity;
+  }
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links a{
+    white-space:nowrap;
+    flex:0 0 auto;
+    padding:.48rem .7rem;
+    font-size:.78rem;
+    scroll-snap-align:start;
+  }
+  .hero{
+    padding:4.2rem 0 2.8rem;
+  }
+  .hero-grid{gap:1.2rem}
+  h1{
+    font-size:clamp(2.35rem,13vw,3.8rem);
+    line-height:.98;
+  }
+  .hero p,
+  .section-head p,
+  .panel p,
+  .note p,
+  .quote{
+    font-size:.95rem;
+    line-height:1.72;
+  }
+  .hero-card,
+  .panel,
+  .note{
+    padding:1.25rem 1rem;
+    border-radius:22px;
+  }
+  .hero-actions{
+    gap:.75rem;
+  }
+  .section-head{margin-bottom:1.4rem}
+  .section-head h2{
+    font-size:clamp(1.8rem,10vw,2.55rem);
+  }
+  .grid-2,
+  .grid-3{
+    gap:.9rem;
+  }
+  .hero-list,
+  .panel ul{
+    gap:.55rem;
+  }
+  .footer{
+    padding:2rem 0 2.6rem;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
+
+@media (max-width:390px){
+  .nav-links a{
+    padding:.44rem .64rem;
+    font-size:.74rem;
+  }
+  h1{
+    font-size:clamp(2.15rem,12.4vw,3.35rem);
+  }
+}
 </style>
 </head>
 <body>
